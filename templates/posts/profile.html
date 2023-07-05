@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load thumbnail %}
+{% load static %}
+{% block title %}Страница пользователя {{ username }}{% endblock %}
+  {% block content %}
+    <main>
+      <div class="container py-5">
+        <h1>Все посты пользователя {{ username }}</h1>
+        <h3>Всего постов: {{ count }} </h3>
+      {% if curruser != username %}
+      {% if follow %}
+          <a href="{% url  'social:follow' username %}">Подписаться</a>
+      {% else %}
+          <a href="{% url  'social:follow' username %}">Отписаться</a>
+      {% endif %}
+      {% endif %}
+          {% for post in posts %}
+        <article>
+          <ul>
+            <li>
+              Дата публикации: {{ post.pub_date|date:"d E Y" }}
+            </li>
+          </ul>
+            {% thumbnail post.image "960x339" crop="center" upscale=True as im %}
+            <img class="card-img my-2" src="{{ im.url }}">
+          {% endthumbnail %}
+            <span><p><a href="{% url  'social:post_detail' post.pk %} " style="color: black; text-decoration: none">{{ post.text }}</a></p></span>
+        </article>
+              {% if not forloop.last %}<hr>{% endif %}
+          {% endfor %}
+        <!-- Остальные посты. после последнего нет черты -->
+        <!-- Здесь подключён паджинатор -->
+      </div>
+    <style>
+        .avatar {
+                  display: inline-block;
+                  width: 100px; /* задаем ширину блока с аватаркой */
+                  height: 100px; /* задаем высоту блока с аватаркой */
+                  border-radius: 50%; /* делаем круглую форму */
+                  overflow: hidden; /* скрываем все, что выходит за границы круга */
+                }
+
+                .avatar img {
+                  width: 100%; /* задаем ширину картинки равной ширине блока */
+                  height: auto; /* автоматически вычисляем высоту картинки */
+                }
+    </style>
+    </main>
+      {% include 'includes/paginator.html' %}
+    {% endblock content %}

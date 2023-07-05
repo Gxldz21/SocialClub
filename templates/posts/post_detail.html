@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load thumbnail %}
+{% block title %}Пост {{ posts.text }}{% endblock %}
+{% block content %}
+    <main>
+        <div class="container py-5">
+            <div class="row">
+                <aside class="col-12 col-md-3">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            Дата публикации: {{ posts.pub_date|date:"d E Y" }}
+                        </li>
+                        {% if group_posts.group.slug %}
+                            <li class="list-group-item">
+                                Группа: {{ group_post.group.title }}
+                                <a href="{% url 'social:group' group_posts.group.slug %}">
+                                    {{ group_posts.group.title }}
+                                </a>
+                            </li>
+                        {% endif %}
+                        <li class="list-group-item">
+                            Автор: {{ posts.author.username }}
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Всего постов автора: {{ count }}
+                        </li>
+                        <li class="list-group-item">
+                            {#                все посты пользователя {{ posts.author.username }}#}
+                            все посты пользователя <a href="{% url  'social:profile' posts.author.username %}">
+                            {{ posts.author.username }}
+                        </a>
+                        </li>
+                        <li class="list-group-item">
+                            {% if user_post ==  posts.author.username %}
+                            <p><a class="btn btn-primary" href="{% url  'social:update' posts.pk %}">Редактировать</a>
+                            </p>
+                        {% endif %}</li>
+                    </ul>
+                </aside>
+                <article class="col-12 col-md-9">
+                    {% thumbnail posts.image "960x339" crop="center" upscale=True as im %}
+                        <img class="card-img my-2" src="{{ im.url }}">
+                    {% endthumbnail %}
+                    <p>
+                        {{ posts.text }}
+                    </p>
+                    <hr>
+                        <div class="container">
+                          <div class="item"><H3>Комментарии: {{ comment.count }}</H3></div>
+                        </div>
+                    <hr>
+                {% if comments %}
+                    {% for com in comments %}
+                        <strong><a href="{% url  'social:profile' com.com_author.username %}" style="color: black; text-decoration: none"> {{ com.com_author.username }}</a></strong>
+                        <sup>{{ com.com_date | date:'d.m.Y в H:i'}}</sup>
+                        <p>{{ com.com_text }}</p>
+                        <hr>
+                    {% endfor %}
+                {% else %}
+                    <p>Пока пусто...</p>
+                {% endif %}
+                <form method="post" action="{% url 'social:comment' posts.pk %}">{% csrf_token %}
+                    <div class="form-group row my-3 p-3">
+                        <textarea placeholder="Напишите что-нибудь..." name="text" cols="40" rows="2"
+                                  class="form-control" required id="text"></textarea>
+                    </div>
+                    <p><button class="btn btn-primary" type="submit">Отправить</button></p>
+                    </form>
+                    {% if comments.has_other_pages %}
+            <main>
+      <div class="container py-5">
+<nav aria-label="Page navigation" class="my-5">
+  <ul class="pagination">
+    {% if comments.has_previous %}
+      <li class="page-item"><a class="page-link" href="?page=1">Первая</a></li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{ comments.previous_page_number }}">
+          Предыдущая
+        </a>
+      </li>
+    {% endif %}
+    {% for i in comments.paginator.page_range %}
+        {% if comments.number == i %}
+          <li class="page-item active">
+            <span class="page-link">{{ i }}</span>
+          </li>
+        {% else %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+          </li>
+        {% endif %}
+    {% endfor %}
+    {% if comments.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ comments.next_page_number }}">
+          Следующая
+        </a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="?page={{ comments.paginator.num_pages }}">
+          Последняя
+        </a>
+      </li>
+    {% endif %}
+  </ul>
+</nav>
+                </div>
+    </main>
+{% endif %}
+                </article>
+            </div>
+        </div>
+    <style>
+        .container {
+          display: flex; /* устанавливаем режим flexbox */
+        }
+        .item {
+            display: flex; /* устанавливаем режим flexbox */
+            flex: 1; /* устанавливаем равные пропорции ширины элементов */
+        }</style>
+    </main>
+{% endblock content %}

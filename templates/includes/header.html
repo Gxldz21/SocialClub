@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+        <header>
+      <!-- Использованы классы бустрапа для создания типовой навигации с логотипом -->
+      <!-- В дальнейшем тут будет создано полноценное меню -->
+      <nav class="navbar navbar-light" style="background-color: lightskyblue">
+        <div class="container">
+          <a class="navbar-brand" href="{% url 'social:main' %}">
+            <img src="{% static 'img/logo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
+            <!-- тег span используется для добавления нужных стилей отдельным участкам текста -->
+            <span style="color:red">Ya</span>tube</a>
+            <ul class="nav nav-pills">
+            {% if user.is_authenticated %}
+                <li><a class="navbar-brand" href="{% url 'social:sub' %}">Избранные авторы</a></li>
+                <li><a class="navbar-brand" href="{% url 'social:main' %}">Все авторы</a></li>
+                <li><a class="navbar-brand" href="{% url 'social:create' %}">Создать пост</a></li>
+                <li class="nav-item"><a class="navbar-brand" href="{% url 'users:logout' %}">Выйти</a></li>
+                <li><a class="navbar-brand" href="{% url 'social:profile' user.username %}">{{ user.username }}</a></li>
+            {% else %}
+                <li class="nav-item">
+                            <a class="navbar-brand" href="{% url 'users:login' %}">Войти</a>
+                </li>
+                <li class="nav-item">
+                <a class="navbar-brand" href="{% url 'users:signup' %}">Регистрация</a>
+                </li>
+            {% endif %}
+        </ul>
+        </div>
+      </nav>
+    </header>
+</body>
+</html>
