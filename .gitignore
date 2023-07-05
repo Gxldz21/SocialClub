@@ -1,11 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 /media/posts/
-=======
-/media/
->>>>>>> 9c64bb2c0a654cbd7f3bb27ad5114bff48105302
 /db.sqlite3
-=======
-/media/posts
-/db.sqlite3
->>>>>>> 80dd9ad5b2cf174d7465ff8ffba93c3b4c0eb3f2
+/venv/
