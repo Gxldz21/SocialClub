@@ -1,14 +1,22 @@
 from django.contrib import messages
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
+from rest_framework import status, generics
+from rest_framework import viewsets
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from .models import *
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.views.generic.base import TemplateView
 from .forms import CreationPost
 from django.views.decorators.cache import cache_page
+
+from .serializers import PostSerializer
 
 
 @login_required
@@ -203,6 +211,9 @@ def comment(request, post_id):
     else:
         return redirect('social:post_detail', post.pk)
 
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
 
 def page_not_found(request, exception):
     return render(request, 'includes/404.html', {'path': request.path}, status=404)

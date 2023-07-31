@@ -1,8 +1,12 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework.routers import SimpleRouter
 
+from .views import *
+router = SimpleRouter()
+router.register('post', PostViewSet, basename='post')
 
 app_name = 'social'
 
@@ -18,6 +22,7 @@ urlpatterns = [
     path('posts/<int:post_id>/comment', views.comment, name='comment'),
     path('profile/<str:username>/follow', views.follow, name='follow'),
     path('subscribe/', views.sub, name='sub'),
+    path('api/', include(router.urls)),
 ]
 
 if settings.DEBUG:

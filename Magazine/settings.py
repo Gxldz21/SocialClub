@@ -28,6 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'www.SociaGxldClub.pythonanywhere.com',
     'SociaGxldClub.pythonanywhere.com',
+    '127.0.0.1',
 ]
 
 
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     "users.apps.UsersConfig",
     "core",
     'sorl.thumbnail',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
