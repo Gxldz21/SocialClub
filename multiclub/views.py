@@ -16,7 +16,7 @@ from django.views.generic.base import TemplateView
 from .forms import CreationPost
 from django.views.decorators.cache import cache_page
 
-from .serializers import PostSerializer
+from .serializers import *
 
 
 @login_required
@@ -214,6 +214,10 @@ def comment(request, post_id):
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+
+class GroupViewSet(viewsets.ModelViewSet):
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
 
 def page_not_found(request, exception):
     return render(request, 'includes/404.html', {'path': request.path}, status=404)

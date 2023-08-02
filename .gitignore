@@ -1,3 +1,6 @@
-/media/posts/
+/media/
 /db.sqlite3
 /venv/
+/migrations/
+/sent_emails/
+/static/
