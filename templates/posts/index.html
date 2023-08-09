@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 {% load thumbnail %}
 {% block content %}
-    {% load static %}
+{% load static %}
         <main>
       <div class="container py-5">
+          {% include 'includes/switcher.html' %}
   {% for post in posts %}
       <article>
   <ul>

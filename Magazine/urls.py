@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin, auth
 from django.urls import path, include
+from rest_framework.authtoken import views
 
 handler404 = 'multiclub.views.page_not_found'
 
@@ -24,6 +25,6 @@ urlpatterns = [
     path('group/<slug:slug>/', include('multiclub.urls',namespace='posts2')),
     path("admin/", admin.site.urls),
     path('', include('users.urls')),
-    # path("auth/", include('django.contrib.auth.urls')),
+    path('api-token-auth/', views.obtain_auth_token),
 
 ]

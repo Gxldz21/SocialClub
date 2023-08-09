@@ -16,8 +16,6 @@
             <span style="color:red">Ya</span>tube</a>
             <ul class="nav nav-pills">
             {% if user.is_authenticated %}
-                <li><a class="navbar-brand" href="{% url 'social:sub' %}">Избранные авторы</a></li>
-                <li><a class="navbar-brand" href="{% url 'social:main' %}">Все авторы</a></li>
                 <li><a class="navbar-brand" href="{% url 'social:create' %}">Создать пост</a></li>
                 <li class="nav-item"><a class="navbar-brand" href="{% url 'users:logout' %}">Выйти</a></li>
                 <li><a class="navbar-brand" href="{% url 'social:profile' user.username %}">{{ user.username }}</a></li>

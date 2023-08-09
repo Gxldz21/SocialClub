@@ -1,3 +1,5 @@
+import time
+
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -189,6 +191,7 @@ def update_post(request, post_id):
 
 
 def follow(request, username):
+    time.sleep(0.2)
     follower = User.objects.filter(username=str(request.user)).first().id
     following = User.objects.filter(username=username).first().id
     if Follow.objects.filter(author_id=following).filter(user_id=follower).exists():
