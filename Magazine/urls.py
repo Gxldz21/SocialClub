@@ -25,6 +25,7 @@ urlpatterns = [
     path('group/<slug:slug>/', include('multiclub.urls',namespace='posts2')),
     path("admin/", admin.site.urls),
     path('', include('users.urls')),
-    path('api-token-auth/', views.obtain_auth_token),
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.jwt')),
 
 ]
