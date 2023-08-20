@@ -6,10 +6,6 @@ from rest_framework.routers import SimpleRouter
 
 from .views import *
 
-router = SimpleRouter()
-router.register('post', PostViewSet, basename='post')
-router.register('group', GroupViewSet, basename='group')
-
 app_name = 'social'
 
 urlpatterns = [
@@ -24,7 +20,6 @@ urlpatterns = [
     path('posts/<int:post_id>/comment', views.comment, name='comment'),
     path('profile/<str:username>/follow', views.follow, name='follow'),
     path('subscribe/', views.sub, name='sub'),
-    path('api/v1/', include(router.urls)),
 ]
 
 if settings.DEBUG:

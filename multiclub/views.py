@@ -214,13 +214,25 @@ def comment(request, post_id):
     else:
         return redirect('social:post_detail', post.pk)
 
-class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
+@api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
+def api_posts_detail(request, pk):
+    post = get_object_or_404(Post, id=pk)
+    if request.method == 'GET':
+        serializer = PostSerializer(post)
+        return Response(serializer.data)
+    user = request.user
+    if user != post.author:
+        return Response(status=status.HTTP_403_FORBIDDEN)
+    if request.method == 'PUT' or request.method == 'PATCH':
+        serializer = PostSerializer(post, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class GroupViewSet(viewsets.ModelViewSet):
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
+    elif request.method == 'DELETE':
+        post.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 def page_not_found(request, exception):
     return render(request, 'includes/404.html', {'path': request.path}, status=404)
