@@ -32,12 +32,11 @@ class PostSerializer(serializers.ModelSerializer):
     tags = TagsSerializer(many=True, required=False, allow_null=True)
     character_quantity = serializers.SerializerMethodField()
     publication_date = serializers.DateTimeField(source='pub_date', read_only=True)
-    author = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
         model = Post
-        author = serializers.PrimaryKeyRelatedField(read_only=True)
-        fields = ('id', 'text', 'author', 'image', 'publication_date', 'group', 'tags', 'character_quantity')
+        fields = ('id', 'text', 'image', 'publication_date', 'group', 'tags', 'character_quantity')
+        read_only_fields = ('author',)
 
     def get_character_quantity(self, obj):
         return len(obj.text)
@@ -46,6 +45,7 @@ class PostSerializer(serializers.ModelSerializer):
         if 'tags' not in self.initial_data:
             post = Post.objects.create(**validated_data)
             return post
+
 
         tags = validated_data.pop('tags')
         post = Post.objects.create(**validated_data)
@@ -58,6 +58,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
+        data['author'] = instance.author.username
         if self.context['request'].method == 'GET':
             if data['group'] is not None:
                 data['group'] = instance.group.title
