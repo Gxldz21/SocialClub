@@ -8,5 +8,6 @@ requests==2.26.0
 six==1.16.0
 sorl-thumbnail==12.7.0
 djangorestframework==3.14.0
-djoser
-djangorestframework-simplejwt
+djoser==2.1.0
+djangorestframework-simplejwt==4.7.2
+pip install django-filter==23.2

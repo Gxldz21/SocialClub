@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "core",
     'sorl.thumbnail',
     'rest_framework',
+    'django_filters',
     'rest_framework.authtoken',
     # 'djoser',
 ]

@@ -1,8 +1,9 @@
-from rest_framework import viewsets, status, permissions
+from rest_framework import viewsets, status, permissions, filters
 from rest_framework.decorators import api_view
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from .permissions import *
+from .pagination import *
 
 from multiclub.models import *
 
@@ -15,9 +16,12 @@ from multiclub.serializers import *
 #     return obj
 
 class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
+    queryset = Post.objects.all().order_by('pub_date')
     serializer_class = PostSerializer
     permission_classes = (IsOwnerPostOrReadOnly,)
+    pagination_class = CustomPagination
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('$text',)
 
     def perform_create(self, serializer):
         author = User.objects.filter(username=self.request.user)[0]
@@ -25,15 +29,18 @@ class PostViewSet(viewsets.ModelViewSet):
 
 
 class GroupViewSet(viewsets.ModelViewSet):
-    queryset = Group.objects.all()
+    queryset = Group.objects.all().order_by('title')
     serializer_class = GroupSerializer
     permission_classes = (IsOwnerPostOrReadOnly,)
+    pagination_class = CustomPagination
+
 
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentsSerializer
     permission_classes = (IsOwnerPostOrReadOnly,)
+    pagination_class = CustomPagination
 
     def perform_create(self, serializer):
         post_id = self.kwargs.get('post_id')
