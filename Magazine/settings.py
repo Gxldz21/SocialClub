@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'rest_framework.authtoken',
-    # 'djoser',
+    'djoser',
 ]
 
 MIDDLEWARE = [
@@ -83,8 +83,8 @@ TEMPLATES = [
     },
 ]
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-# STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 STATIC_URL = "/static/"
 
 WSGI_APPLICATION = "Magazine.wsgi.application"

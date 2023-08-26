@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from rest_framework import viewsets, status, permissions, filters
 from rest_framework.decorators import api_view
 from rest_framework.generics import get_object_or_404
@@ -7,7 +8,7 @@ from .pagination import *
 
 from multiclub.models import *
 
-from multiclub.serializers import *
+from .serializers import *
 
 
 # def get_object(self):
@@ -35,7 +36,6 @@ class GroupViewSet(viewsets.ModelViewSet):
     pagination_class = CustomPagination
 
 
-
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentsSerializer
@@ -51,3 +51,19 @@ class CommentViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         post_id = self.kwargs.get('post_id')
         return Comment.objects.filter(post=post_id)
+
+
+class FollowViewSet(viewsets.ModelViewSet):
+    queryset = Follow.objects.all()
+    serializer_class = FollowSerializer
+    permission_classes = (IsOwnerPostOrReadOnly,)
+
+    pagination_class = CustomPagination
+
+    def get_queryset(self):
+        followings = Follow.objects.filter(user=self.request.user)
+        queryset = followings
+        return queryset
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

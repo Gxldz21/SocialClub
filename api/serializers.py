@@ -1,7 +1,32 @@
+from rest_framework import validators
 from rest_framework import serializers
 from rest_framework.relations import StringRelatedField
 
-from .models import *
+from multiclub.models import *
+
+
+class FollowSerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField(
+        read_only=True, default=serializers.CurrentUserDefault())
+    following = serializers.SlugRelatedField(
+        slug_field='username',
+        queryset=User.objects.all(),
+        source='author'
+    )
+    def validate_following(self, value):
+        user = self.context['request'].user
+        if user == value:
+            raise serializers.ValidationError(
+                "Попытка подписатся на самого себя.")
+        return value
+
+    class Meta:
+        fields = 'user','following'
+        model = Follow
+        validators = [
+            validators.UniqueTogetherValidator(queryset=Follow.objects.all(),
+                                               fields=('user', 'author'))
+        ]
 
 
 class GroupSerializer(serializers.ModelSerializer):
@@ -45,7 +70,6 @@ class PostSerializer(serializers.ModelSerializer):
         if 'tags' not in self.initial_data:
             post = Post.objects.create(**validated_data)
             return post
-
 
         tags = validated_data.pop('tags')
         post = Post.objects.create(**validated_data)

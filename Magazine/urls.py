@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin, auth
 from django.urls import path, include
+from django.views.generic import TemplateView
 
 handler404 = 'multiclub.views.page_not_found'
 
@@ -25,6 +26,11 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('', include('users.urls')),
     path('',include('api.urls')),
+    path(
+        'redoc/',
+        TemplateView.as_view(template_name='redoc.html'),
+        name='redoc'
+    ),
     # path('auth/', include('djoser.urls')),
     # path('auth/', include('djoser.urls.jwt')),
 

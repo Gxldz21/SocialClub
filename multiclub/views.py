@@ -18,8 +18,6 @@ from django.views.generic.base import TemplateView
 from .forms import CreationPost
 from django.views.decorators.cache import cache_page
 
-from .serializers import *
-
 
 @login_required
 def new_post(request):
@@ -191,7 +189,6 @@ def update_post(request, post_id):
 
 
 def follow(request, username):
-    time.sleep(0.2)
     follower = User.objects.filter(username=str(request.user)).first().id
     following = User.objects.filter(username=username).first().id
     if Follow.objects.filter(author_id=following).filter(user_id=follower).exists():
@@ -214,25 +211,6 @@ def comment(request, post_id):
     else:
         return redirect('social:post_detail', post.pk)
 
-@api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
-def api_posts_detail(request, pk):
-    post = get_object_or_404(Post, id=pk)
-    if request.method == 'GET':
-        serializer = PostSerializer(post)
-        return Response(serializer.data)
-    user = request.user
-    if user != post.author:
-        return Response(status=status.HTTP_403_FORBIDDEN)
-    if request.method == 'PUT' or request.method == 'PATCH':
-        serializer = PostSerializer(post, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    elif request.method == 'DELETE':
-        post.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
 
 def page_not_found(request, exception):
     return render(request, 'includes/404.html', {'path': request.path}, status=404)
