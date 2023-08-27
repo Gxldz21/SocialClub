@@ -39,7 +39,7 @@ class GroupViewSet(viewsets.ModelViewSet):
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentsSerializer
-    permission_classes = (IsOwnerPostOrReadOnly,)
+    permission_classes = (IsOwnerCommentOrReadOnly,)
     pagination_class = CustomPagination
 
     def perform_create(self, serializer):
@@ -57,13 +57,15 @@ class FollowViewSet(viewsets.ModelViewSet):
     queryset = Follow.objects.all()
     serializer_class = FollowSerializer
     permission_classes = (IsOwnerPostOrReadOnly,)
-
     pagination_class = CustomPagination
 
     def get_queryset(self):
-        followings = Follow.objects.filter(user=self.request.user)
-        queryset = followings
-        return queryset
+        user = Follow.objects.filter(user=self.request.user)
+        return user
 
+    #
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        username = serializer.validated_data['author']
+        author = User.objects.get(username=username)
+        user = self.request.user
+        serializer.save(user=user, author=author)

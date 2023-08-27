@@ -25,6 +25,7 @@ urlpatterns = [
     path('group/<slug:slug>/', include('multiclub.urls',namespace='posts2')),
     path("admin/", admin.site.urls),
     path('', include('users.urls')),
+    path('', include('django.contrib.auth.urls')),
     path('',include('api.urls')),
     path(
         'redoc/',

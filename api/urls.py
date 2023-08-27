@@ -16,7 +16,9 @@ comments_router = DefaultRouter()
 comments_router.register('comments', CommentViewSet, basename='comments')
 
 urlpatterns = [
-    path('api/v1/api-token-auth/', views_token.obtain_auth_token),
+    path('api/v1/', include('djoser.urls')),
+    path('api/v1/', include('djoser.urls.jwt')),
+    # path('api/v1/api-token-auth/', views_token.obtain_auth_token),
     path('api/v1/', include(router.urls)),
     path('api/v1/<int:post_id>/', include(comments_router.urls)),
 
