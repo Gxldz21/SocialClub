@@ -4,30 +4,13 @@
 <head>
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!--    <title>Gridy Blog</title>-->
-
-    <!-- font awesome icons cdn -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
-        integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
-        crossorigin="anonymous" />
-
-    <!-- swiper slider css file -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/6.4.5/swiper-bundle.min.css"
-        integrity="sha512-m3pAvNriL711NMlhkZHK6K4Tu2/RjtrzyjxZU8mlAbxxoDoURy27KajN1LGTLeEEPvaN12mKAgSCrYEwF9y0jA=="
-        crossorigin="anonymous" />
-
-    <!-- custom style.css file -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+<!--    <link rel="stylesheet" href="{% static 'css/style.css' %}">-->
 </head>
 <body>
                <div class="copyrights">
                    <p class="text-center text-secondary display-2">
-                        © {{ year }} <a href="{% url  'social:main' %}" class="text-primary">Dailytuition</a> - Personal Blog Theme. All rights reserved.
+                        © {{ year }} <a href="{% url  'social:main' %}" style="color: var(--primary-color);">Dailytuition</a> - Personal Blog Theme. All rights reserved.
                    </p>
                </div>
-<!--    <footer class="border-top text-center py-3">-->
-<!--      &lt;!&ndash; тег span используется для добавления нужных стилей отдельным участкам текста &ndash;&gt;-->
-<!--      <p>© {{ year }} Copyright <span style="color:red">Ya</span>tube</p>-->
-<!--    </footer>-->
 </body>
 </html>
