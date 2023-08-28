@@ -17,15 +17,24 @@
 <header id="header" class="shadow bg-light">
     <nav class="container navbar">
         <a href="{% url  'social:main' %}" class="nav-brand text-dark">
-            Gridy
+            SocialClub
         </a>
             <ul class="navbar-nav" style="flex-direction: row;">
-                <a href="#" class="nav-link">Home</a>
-                <a href="#" class="nav-link">Blog</a>
-                <a href="#" class="nav-link">Pages</a>
-                <a href="#" class="nav-link">Categories</a>
-                <a href="#" class="nav-link">About</a>
-                <a href="#" class="nav-link">Contact</a>
+                {% if user.is_authenticated %}
+                <a href="{% url 'social:create' %}" class="nav-link">Создать пост</a>
+                <a href="{% url 'users:logout' %}" class="nav-link">Выйти</a>
+                <a href="{% url 'social:profile' user.username %}" class="nav-link" style="font-weight: bold;">{{ user.username }}</a>
+                {% else %}
+                <a href="{% url 'users:login' %}" class="nav-link">Войти</a>
+                <a href="{% url 'users:signup' %}" class="nav-link">Регистрация</a>
+<!--                                <li class="nav-item">-->
+<!--                            <a class="navbar-brand" href="{% url 'users:login' %}">Войти</a>-->
+<!--                </li>-->
+<!--                <li class="nav-item">-->
+<!--                <a class="navbar-brand" href="{% url 'users:signup' %}">Регистрация</a>-->
+<!--                </li>-->
+                {% endif %}
+
             </ul>
     </nav>
 </header>

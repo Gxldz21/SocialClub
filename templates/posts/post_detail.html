@@ -2,121 +2,204 @@
 {% load thumbnail %}
 {% block title %}Пост {{ posts.text }}{% endblock %}
 {% block content %}
-    <main>
-        <div class="container py-5">
-            <div class="row">
-                <aside class="col-12 col-md-3">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">
-                            Дата публикации: {{ posts.pub_date|date:"d E Y" }}
-                        </li>
-                        {% if group_posts.group.slug %}
-                            <li class="list-group-item">
-                                Группа: {{ group_post.group.title }}
-                                <a href="{% url 'social:group' group_posts.group.slug %}">
-                                    {{ group_posts.group.title }}
-                                </a>
-                            </li>
-                        {% endif %}
-                        <li class="list-group-item">
-                            Автор: {{ posts.author.username }}
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            Всего постов автора: {{ count }}
-                        </li>
-                        <li class="list-group-item">
-                            {#                все посты пользователя {{ posts.author.username }}#}
-                            все посты пользователя <a href="{% url  'social:profile' posts.author.username %}">
-                            {{ posts.author.username }}
-                        </a>
-                        </li>
-                        <li class="list-group-item">
-                            {% if user_post ==  posts.author.username %}
-                            <p><a class="btn btn-primary" href="{% url  'social:update' posts.pk %}">Редактировать</a>
-                            </p>
-                        {% endif %}</li>
-                    </ul>
-                </aside>
-                <article class="col-12 col-md-9">
-                    {% thumbnail posts.image "960x339" crop="center" upscale=True as im %}
-                        <img class="card-img my-2" src="{{ im.url }}">
-                    {% endthumbnail %}
-                    <p>
-                        {{ posts.text }}
-                    </p>
-                    <hr>
-                        <div class="container">
-                          <div class="item"><H3>Комментарии: {{ comment.count }}</H3></div>
-                        </div>
-                    <hr>
-                {% if comments %}
-                    {% for com in comments %}
-                        <strong><a href="{% url  'social:profile' com.com_author.username %}" style="color: black; text-decoration: none"> {{ com.com_author.username }}</a></strong>
-                        <sup>{{ com.com_date | date:'d.m.Y в H:i'}}</sup>
-                        <p>{{ com.com_text }}</p>
-                        <hr>
-                    {% endfor %}
-                {% else %}
-                    <p>Пока пусто...</p>
-                {% endif %}
-                <form method="post" action="{% url 'social:comment' posts.pk %}">{% csrf_token %}
-                    <div class="form-group row my-3 p-3">
-                        <textarea placeholder="Напишите что-нибудь..." name="text" cols="40" rows="2"
-                                  class="form-control" required id="text"></textarea>
+<main id="site-main">
+
+    <!-- Post Content -->
+    <section class="container">
+        <article id="post">
+            <!-- article heading -->
+            <div class="headings text-center">
+                <div class="title">
+                        <h2 class="text-title text-dark display-1">Looking for some feedback for this rejected track
+                            technology</h2>
                     </div>
-                    <p><button class="btn btn-primary" type="submit">Отправить</button></p>
-                    </form>
-                    {% if comments.has_other_pages %}
-            <main>
-      <div class="container py-5">
-<nav aria-label="Page navigation" class="my-5">
-  <ul class="pagination">
-    {% if comments.has_previous %}
-      <li class="page-item"><a class="page-link" href="?page=1">Первая</a></li>
-      <li class="page-item">
-        <a class="page-link" href="?page={{ comments.previous_page_number }}">
-          Предыдущая
-        </a>
-      </li>
-    {% endif %}
-    {% for i in comments.paginator.page_range %}
-        {% if comments.number == i %}
-          <li class="page-item active">
-            <span class="page-link">{{ i }}</span>
-          </li>
-        {% else %}
-          <li class="page-item">
-            <a class="page-link" href="?page={{ i }}">{{ i }}</a>
-          </li>
-        {% endif %}
-    {% endfor %}
-    {% if comments.has_next %}
-      <li class="page-item">
-        <a class="page-link" href="?page={{ comments.next_page_number }}">
-          Следующая
-        </a>
-      </li>
-      <li class="page-item">
-        <a class="page-link" href="?page={{ comments.paginator.num_pages }}">
-          Последняя
-        </a>
-      </li>
-    {% endif %}
-  </ul>
-</nav>
+                <div class="meta">
+                    <a href="#" class="link display-2 text-secondary px-1">
+                        <i class="fas fa-user text-primary"></i> {{ posts.author.username }}
+                    </a>
+                    <a href="#" class="link display-2 text-secondary px-1">
+                        <i class="fas fa-clock text-primary"></i> {{ posts.pub_date|date:"d E Y" }}
+                    </a>
+                    <a href="#" class="link display-2 text-secondary px-1">
+                        <i class="fas fa-comments text-primary"></i> 12
+                    </a>
                 </div>
-    </main>
-{% endif %}
-                </article>
+
+            </div>
+            {% if group_posts.image %}
+            <!-- thumbnail  -->
+            <div class="thumbnail mt-3">
+                {% thumbnail posts.image "960x339" crop="center" upscale=True as im %}
+                <img class="card-img my-2" src="{{ im.url }}">
+                {% endthumbnail %}
+                <!--                    <img src="./assets/img1.jpg" class="thumbnail" alt="">-->
+            </div>
+
+            <!-- content -->
+            <div class="content text-dark display-2 secondary-title mt-3">
+                <p style="text-align: center;">{{ posts.text }}</p>
+            </div>
+            {% else %}
+            <div class="content text-dark display-2 secondary-title mt-3">
+                <p style="text-align: center;">{{ posts.text }}</p>
+            </div>
+            {% endif %}
+        </article>
+
+        <!-- post footer -->
+        <div class="post-footer mb-3">
+            <div class="post-tags d-flex flex-wrap justify-content-center">
+                <a href="#" class="nav-link btn bg-light">Travel</a>
+                <a href="#" class="nav-link btn bg-light">Food</a>
+                <a href="#" class="nav-link btn bg-light">Lifestyle</a>
+                <a href="#" class="nav-link btn bg-light">Techonogy</a>
+                <a href="#" class="nav-link btn bg-light">Fashion</a>
             </div>
         </div>
-    <style>
-        .container {
-          display: flex; /* устанавливаем режим flexbox */
-        }
-        .item {
-            display: flex; /* устанавливаем режим flexbox */
-            flex: 1; /* устанавливаем равные пропорции ширины элементов */
-        }</style>
-    </main>
+        <div class="post-comments py-2">
+                    <h3 class="text-center display-1 secondary-title py-2">5 Comments</h3>
+
+                    <div class="comment-details">
+                        <div class="comment-item py-2">
+                            <div class="d-flex">
+                                <div class="avatar px-2">
+                                    <img src="./assets/face/face1.jpg" class="rounded" alt="">
+                                </div>
+                                <div class="comment-content">
+                                    <h5 class="display-2 m-0">Brandon Kelley</h5>
+                                    <p class="title-secondary text-dark">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                        incididunt ut labore aliqua. Quis ipsum suspendisse ultrices gravida lacus vel
+                                        facilisis.
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- comment reply -->
+                            <div class="reply py-2">
+                                <div class="d-flex">
+                                    <div class="avatar px-2">
+                                        <img src="./assets/face/face2.jpg" class="rounded" alt="">
+                                    </div>
+                                    <div class="comment-content">
+                                        <h5 class="display-2 m-0">Brandon Kelley</h5>
+                                        <p class="title-secondary text-dark">
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                            tempor incididunt ut labore aliqua. Quis ipsum suspendisse ultrices gravida
+                                            lacus vel facilisis.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="comment-item py-2">
+                            <div class="d-flex">
+                                <div class="avatar px-2">
+                                    <img src="./assets/face/face3.jpg" class="rounded" alt="">
+                                </div>
+                                <div class="comment-content">
+                                    <h5 class="display-2 m-0">Brandon Kelley</h5>
+                                    <p class="title-secondary text-dark">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                        incididunt ut labore aliqua. Quis ipsum suspendisse ultrices gravida lacus vel
+                                        facilisis.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-center display-1 secondary-title py-2">Leave Comment</h3>
+                                <div class="comment-form">
+                        <div class="d-flex justify-content-between flex-wrap">
+                            <input type="text" class="form-control " placeholder="Name">
+                            <input type="email" class="form-control" placeholder="Email">
+                            <input type="text" class="form-control" placeholder="Website">
+                        </div>
+                        <textarea class="form-control mt-3" placeholder="Message" rows="10"></textarea>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary display-2 text-light mt-2">Submit</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+</main>
+<!--    <main>-->
+<!--        <div class="container py-5">-->
+<!--            <div class="row">-->
+<!--                <aside class="col-12 col-md-3">-->
+<!--                    <ul class="list-group list-group-flush">-->
+<!--                        <li class="list-group-item">-->
+<!--                            Дата публикации: {{ posts.pub_date|date:"d E Y" }}-->
+<!--                        </li>-->
+<!--                        {% if group_posts.group.slug %}-->
+<!--                            <li class="list-group-item">-->
+<!--                                Группа: {{ group_post.group.title }}-->
+<!--                                <a href="{% url 'social:group' group_posts.group.slug %}">-->
+<!--                                    {{ group_posts.group.title }}-->
+<!--                                </a>-->
+<!--                            </li>-->
+<!--                        {% endif %}-->
+<!--                        <li class="list-group-item">-->
+<!--                            Автор: {{ posts.author.username }}-->
+<!--                        </li>-->
+<!--                        <li class="list-group-item d-flex justify-content-between align-items-center">-->
+<!--                            Всего постов автора: {{ count }}-->
+<!--                        </li>-->
+<!--                        <li class="list-group-item">-->
+<!--                            {#                все посты пользователя {{ posts.author.username }}#}-->
+<!--                            все посты пользователя <a href="{% url  'social:profile' posts.author.username %}">-->
+<!--                            {{ posts.author.username }}-->
+<!--                        </a>-->
+<!--                        </li>-->
+<!--                        <li class="list-group-item">-->
+<!--                            {% if user_post ==  posts.author.username %}-->
+<!--                            <p><a class="btn btn-primary" href="{% url  'social:update' posts.pk %}">Редактировать</a>-->
+<!--                            </p>-->
+<!--                        {% endif %}</li>-->
+<!--                    </ul>-->
+<!--                </aside>-->
+<!--                <article class="col-12 col-md-9">-->
+<!--                    {% thumbnail posts.image "960x339" crop="center" upscale=True as im %}-->
+<!--                        <img class="card-img my-2" src="{{ im.url }}">-->
+<!--                    {% endthumbnail %}-->
+<!--                    <p>-->
+<!--                        {{ posts.text }}-->
+<!--                    </p>-->
+<!--                    <hr>-->
+<!--                        <div class="container">-->
+<!--                          <div class="item"><H3>Комментарии: {{ comment.count }}</H3></div>-->
+<!--                        </div>-->
+<!--                    <hr>-->
+<!--                {% if comments %}-->
+<!--                    {% for com in comments %}-->
+<!--                        <strong><a href="{% url  'social:profile' com.com_author.username %}" style="color: black; text-decoration: none"> {{ com.com_author.username }}</a></strong>-->
+<!--                        <sup>{{ com.com_date | date:'d.m.Y в H:i'}}</sup>-->
+<!--                        <p>{{ com.com_text }}</p>-->
+<!--                        <hr>-->
+<!--                    {% endfor %}-->
+<!--                {% else %}-->
+<!--                    <p>Пока пусто...</p>-->
+<!--                {% endif %}-->
+<!--                <form method="post" action="{% url 'social:comment' posts.pk %}">{% csrf_token %}-->
+<!--                    <div class="form-group row my-3 p-3">-->
+<!--                        <textarea placeholder="Напишите что-нибудь..." name="text" cols="40" rows="2"-->
+<!--                                  class="form-control" required id="text"></textarea>-->
+<!--                    </div>-->
+<!--                    <p><button class="btn btn-primary" type="submit">Отправить</button></p>-->
+<!--                    </form>-->
+<!--                </article>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    <style>-->
+<!--        .container {-->
+<!--          display: flex; /* устанавливаем режим flexbox */-->
+<!--        }-->
+<!--        .item {-->
+<!--            display: flex; /* устанавливаем режим flexbox */-->
+<!--            flex: 1; /* устанавливаем равные пропорции ширины элементов */-->
+<!--        }</style>-->
+<!--    </main>-->
 {% endblock content %}
