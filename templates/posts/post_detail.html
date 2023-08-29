@@ -14,37 +14,26 @@
                             technology</h2>
                     </div>
                 <div class="meta">
-                    <a href="#" class="link display-2 text-secondary px-1">
-                        <i class="fas fa-user text-primary"></i> {{ posts.author.username }}
+                    <a href="{% url  'social:profile' posts.author.username %}" class="link display-2 text-secondary px-1">
+                        <i class="fas fa-user text-primary" style="color: #343a40!important"></i>
+                        {{ posts.author.username }}
                     </a>
                     <a href="#" class="link display-2 text-secondary px-1">
-                        <i class="fas fa-clock text-primary"></i> {{ posts.pub_date|date:"d E Y" }}
-                    </a>
-                    <a href="#" class="link display-2 text-secondary px-1">
-                        <i class="fas fa-comments text-primary"></i> 12
+                        <i class="fas fa-clock text-primary" style="color: #343a40!important"></i> {{ posts.pub_date|date:"d E Y в H:i" }}
                     </a>
                 </div>
 
             </div>
-            {% if group_posts.image %}
-            <!-- thumbnail  -->
             <div class="thumbnail mt-3">
                 {% thumbnail posts.image "960x339" crop="center" upscale=True as im %}
                 <img class="card-img my-2" src="{{ im.url }}">
                 {% endthumbnail %}
-                <!--                    <img src="./assets/img1.jpg" class="thumbnail" alt="">-->
             </div>
-
-            <!-- content -->
-            <div class="content text-dark display-2 secondary-title mt-3">
+                <div class="content text-dark display-2 secondary-title mt-3">
                 <p style="text-align: center;">{{ posts.text }}</p>
             </div>
-            {% else %}
-            <div class="content text-dark display-2 secondary-title mt-3">
-                <p style="text-align: center;">{{ posts.text }}</p>
-            </div>
-            {% endif %}
         </article>
+        </div></section>
 
         <!-- post footer -->
         <div class="post-footer mb-3">
@@ -57,71 +46,37 @@
             </div>
         </div>
         <div class="post-comments py-2">
-                    <h3 class="text-center display-1 secondary-title py-2">5 Comments</h3>
-
+                    <h3 class="text-center display-1 secondary-title py-2">{{comment.count}} Comments</h3>
+            {% for com in comments %}
                     <div class="comment-details">
                         <div class="comment-item py-2">
                             <div class="d-flex">
-                                <div class="avatar px-2">
-                                    <img src="./assets/face/face1.jpg" class="rounded" alt="">
-                                </div>
                                 <div class="comment-content">
-                                    <h5 class="display-2 m-0">Brandon Kelley</h5>
+                        <strong><a href="{% url  'social:profile' com.com_author.username %}" style="color: black; text-decoration: none"> {{ com.com_author.username }}</a></strong>
+                        <sup>{{ com.com_date | date:'d.m.Y в H:i'}}</sup>
                                     <p class="title-secondary text-dark">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                        incididunt ut labore aliqua. Quis ipsum suspendisse ultrices gravida lacus vel
-                                        facilisis.
+                                        {{ com.com_text }}
                                     </p>
                                 </div>
                             </div>
-                            <!-- comment reply -->
-                            <div class="reply py-2">
-                                <div class="d-flex">
-                                    <div class="avatar px-2">
-                                        <img src="./assets/face/face2.jpg" class="rounded" alt="">
-                                    </div>
-                                    <div class="comment-content">
-                                        <h5 class="display-2 m-0">Brandon Kelley</h5>
-                                        <p class="title-secondary text-dark">
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                            tempor incididunt ut labore aliqua. Quis ipsum suspendisse ultrices gravida
-                                            lacus vel facilisis.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
+                            {% endfor %}
+                    <h3 class="text-center display-1 secondary-title py-2">Оставьте комментарий</h3>
 
-                        </div>
-                        <div class="comment-item py-2">
-                            <div class="d-flex">
-                                <div class="avatar px-2">
-                                    <img src="./assets/face/face3.jpg" class="rounded" alt="">
-                                </div>
-                                <div class="comment-content">
-                                    <h5 class="display-2 m-0">Brandon Kelley</h5>
-                                    <p class="title-secondary text-dark">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                        incididunt ut labore aliqua. Quis ipsum suspendisse ultrices gravida lacus vel
-                                        facilisis.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <h3 class="text-center display-1 secondary-title py-2">Leave Comment</h3>
+<!--                            <form method="post" action="{% url 'social:comment' posts.pk %}">{% csrf_token %}-->
+<!--                    <div class="form-group row my-3 p-3">-->
+<!--                        <textarea placeholder="Напишите что-нибудь..." name="text" cols="40" rows="2"-->
+<!--                                  class="form-control" required id="text"></textarea>-->
+<!--                    </div>-->
+<!--                    <p><button class="btn btn-primary" type="submit">Отправить</button></p>-->
+<!--                    </form>-->
+                        <form method="post" action="{% url 'social:comment' posts.pk %}">{% csrf_token %}
                                 <div class="comment-form">
-                        <div class="d-flex justify-content-between flex-wrap">
-                            <input type="text" class="form-control " placeholder="Name">
-                            <input type="email" class="form-control" placeholder="Email">
-                            <input type="text" class="form-control" placeholder="Website">
-                        </div>
-                        <textarea class="form-control mt-3" placeholder="Message" rows="10"></textarea>
+                        <textarea class="form-control mt-3" placeholder="Напишите что-нибудь..." rows="10" name="text"></textarea>
                         <div class="text-center">
-                            <button type="submit" class="btn btn-primary display-2 text-light mt-2">Submit</button>
+                            <button type="submit" class="btn btn-primary display-2 text-light mt-2">Отправить</button>
                         </div>
                     </div>
-                </div>
+                        </form>
 
             </div>
 
