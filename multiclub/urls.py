@@ -20,6 +20,7 @@ urlpatterns = [
     path('posts/<int:post_id>/comment', views.comment, name='comment'),
     path('profile/<str:username>/follow', views.follow, name='follow'),
     path('subscribe/', views.sub, name='sub'),
+    path('tags/<str:tag_name>', views.post_tags, name='tag')
 ]
 
 if settings.DEBUG:

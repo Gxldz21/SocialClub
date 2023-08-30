@@ -8,6 +8,7 @@ class Tags(models.Model):
     name = models.CharField(max_length=100)
 
 class Post(models.Model):
+    title = models.CharField(max_length=200)
     text = models.CharField(max_length=5000)
     pub_date = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, related_name='posts', on_delete=models.CASCADE)

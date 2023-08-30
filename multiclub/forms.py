@@ -7,7 +7,7 @@ class CreationPost(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ('text', 'image')
+        fields = ('title', 'text', 'image', 'tags')
 
     # def clean(self):
     #     likes = self.cleaned_data.get('group')

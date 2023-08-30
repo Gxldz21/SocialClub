@@ -7,11 +7,9 @@
     <!-- Post Content -->
     <section class="container">
         <article id="post">
-            <!-- article heading -->
             <div class="headings text-center">
                 <div class="title">
-                        <h2 class="text-title text-dark display-1">Looking for some feedback for this rejected track
-                            technology</h2>
+                        <h2 class="text-title text-dark display-1">{{posts.title}}</h2>
                     </div>
                 <div class="meta">
                     <a href="{% url  'social:profile' posts.author.username %}" class="link display-2 text-secondary px-1">
@@ -22,64 +20,57 @@
                         <i class="fas fa-clock text-primary" style="color: #343a40!important"></i> {{ posts.pub_date|date:"d E Y в H:i" }}
                     </a>
                 </div>
-
             </div>
+            {% if posts.image %}
             <div class="thumbnail mt-3">
                 {% thumbnail posts.image "960x339" crop="center" upscale=True as im %}
-                <img class="card-img my-2" src="{{ im.url }}">
+                <img class="thumbnail" src="{{ im.url }}">
                 {% endthumbnail %}
             </div>
+            {% endif %}
                 <div class="content text-dark display-2 secondary-title mt-3">
                 <p style="text-align: center;">{{ posts.text }}</p>
-            </div>
+                </div>
         </article>
-        </div></section>
-
-        <!-- post footer -->
         <div class="post-footer mb-3">
             <div class="post-tags d-flex flex-wrap justify-content-center">
-                <a href="#" class="nav-link btn bg-light">Travel</a>
-                <a href="#" class="nav-link btn bg-light">Food</a>
-                <a href="#" class="nav-link btn bg-light">Lifestyle</a>
-                <a href="#" class="nav-link btn bg-light">Techonogy</a>
-                <a href="#" class="nav-link btn bg-light">Fashion</a>
+                {% for com in tags %}
+                <a href="{% url  'social:tag' com.name %}" class="nav-link btn bg-light">{{com.name}}</a>
+                {% endfor %}
+<!--                <a href="#" class="nav-link btn bg-light">Food</a>-->
+<!--                <a href="#" class="nav-link btn bg-light">Lifestyle</a>-->
+<!--                <a href="#" class="nav-link btn bg-light">Techonogy</a>-->
+<!--                <a href="#" class="nav-link btn bg-light">Fashion</a>-->
             </div>
         </div>
-        <div class="post-comments py-2">
-                    <h3 class="text-center display-1 secondary-title py-2">{{comment.count}} Comments</h3>
-            {% for com in comments %}
-                    <div class="comment-details">
-                        <div class="comment-item py-2">
-                            <div class="d-flex">
-                                <div class="comment-content">
-                        <strong><a href="{% url  'social:profile' com.com_author.username %}" style="color: black; text-decoration: none"> {{ com.com_author.username }}</a></strong>
-                        <sup>{{ com.com_date | date:'d.m.Y в H:i'}}</sup>
-                                    <p class="title-secondary text-dark">
-                                        {{ com.com_text }}
-                                    </p>
-                                </div>
-                            </div>
-                            {% endfor %}
-                    <h3 class="text-center display-1 secondary-title py-2">Оставьте комментарий</h3>
-
-<!--                            <form method="post" action="{% url 'social:comment' posts.pk %}">{% csrf_token %}-->
-<!--                    <div class="form-group row my-3 p-3">-->
-<!--                        <textarea placeholder="Напишите что-нибудь..." name="text" cols="40" rows="2"-->
-<!--                                  class="form-control" required id="text"></textarea>-->
-<!--                    </div>-->
-<!--                    <p><button class="btn btn-primary" type="submit">Отправить</button></p>-->
-<!--                    </form>-->
-                        <form method="post" action="{% url 'social:comment' posts.pk %}">{% csrf_token %}
-                                <div class="comment-form">
-                        <textarea class="form-control mt-3" placeholder="Напишите что-нибудь..." rows="10" name="text"></textarea>
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-primary display-2 text-light mt-2">Отправить</button>
+               <div class="post-comments py-2">
+            <h3 class="text-center display-1 secondary-title py-2">{{comment.count}} Comments</h3>
+    {% for com in comments %}
+            <div class="comment-details">
+                <div class="comment-item py-2">
+                    <div class="d-flex">
+                        <div class="comment-content">
+                <strong><a href="{% url  'social:profile' com.com_author.username %}" style="color: black; text-decoration: none"> {{ com.com_author.username }}</a></strong>
+                <sup>{{ com.com_date | date:'d.m.Y в H:i'}}</sup>
+                            <p class="title-secondary text-dark">
+                                {{ com.com_text }}
+                            </p>
+                        </div>
                         </div>
                     </div>
-                        </form>
-
+                </div>
+                    {% endfor %}
+            <h3 class="text-center display-1 secondary-title py-2">Оставьте комментарий</h3>
+                <form method="post" action="{% url 'social:comment' posts.pk %}">{% csrf_token %}
+                        <div class="comment-form">
+                <textarea class="form-control mt-3" placeholder="Напишите что-нибудь..." rows="10" name="text"></textarea>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary display-2 text-light mt-2">Отправить</button>
+                </div>
             </div>
-
+                </form>
+        </div>
+            </section>
 </main>
 <!--    <main>-->
 <!--        <div class="container py-5">-->

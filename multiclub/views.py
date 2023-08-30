@@ -45,7 +45,6 @@ def new_post(request):
 
 @login_required
 def index(request):
-    title = 'Главная страница'
     user = User.objects.get(username=str(request.user))
     following = user.follower.all().values_list('author', flat=True)
     # posts = Post.objects.filter(author_id__in=following).order_by('-pub_date')
@@ -54,7 +53,6 @@ def index(request):
     pag_number = request.GET.get('page')
     page_obj = pag.get_page(pag_number)
     context = {
-        'title': title,
         'posts': page_obj,
     }
 
@@ -121,6 +119,16 @@ def profile(request, username):
     else:
         raise Http404("Page not found")
 
+@login_required
+def post_tags(request, tag_name):
+    tags_post = Post.objects.filter(tags__name=tag_name)
+    pag = Paginator(tags_post, 10)
+    pag_number = request.GET.get('page')
+    page_obj = pag.get_page(pag_number)
+    context = {
+        'posts': page_obj,
+    }
+    return render(request, 'posts/index.html', context)
 
 @login_required
 def post_detail(request, post_id):
@@ -130,6 +138,7 @@ def post_detail(request, post_id):
     info_post = Post.objects.select_related('author').filter(id=post_id).first()
     post_count = Post.objects.select_related('author').filter(author__username=info_post.author.username).count()
     group_post = Post.objects.select_related('group').filter(id=post_id).first()
+    post_tag = Post.objects.get(pk=post_id).tags.all()
     user = str(request.user)
     pag = Paginator(comments, 10)
     pag_number = request.GET.get('page')
@@ -141,6 +150,7 @@ def post_detail(request, post_id):
         'user_post': user,
         'comment': comments,
         'comments': page_obj,
+        'tags': post_tag,
     }
     return render(request, 'posts/post_detail.html', context)
 

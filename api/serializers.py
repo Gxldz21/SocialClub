@@ -61,7 +61,7 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('id', 'text', 'image', 'publication_date', 'group', 'tags', 'character_quantity')
+        fields = ('title','id', 'text', 'image', 'publication_date', 'group', 'tags', 'character_quantity')
         read_only_fields = ('author',)
 
     def get_character_quantity(self, obj):
