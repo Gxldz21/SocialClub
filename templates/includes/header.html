@@ -21,18 +21,18 @@
         </a>
             <ul class="navbar-nav" style="flex-direction: row;">
                 {% if user.is_authenticated %}
+                {% if edit_post and posts.author == request.user %}
+                <a href="{% url 'social:update' edit_post %}" class="nav-link">Редактировать пост</a>
+                {% elif edit == 1 %}
+                <a href="{% url 'social:delete' post.pk %}" class="nav-link">Удалить пост</a>
+                {% else %}
                 <a href="{% url 'social:create' %}" class="nav-link">Создать пост</a>
+                {% endif %}
                 <a href="{% url 'users:logout' %}" class="nav-link">Выйти</a>
                 <a href="{% url 'social:profile' user.username %}" class="nav-link" style="font-weight: bold;">{{ user.username }}</a>
                 {% else %}
                 <a href="{% url 'users:login' %}" class="nav-link">Войти</a>
                 <a href="{% url 'users:signup' %}" class="nav-link">Регистрация</a>
-<!--                                <li class="nav-item">-->
-<!--                            <a class="navbar-brand" href="{% url 'users:login' %}">Войти</a>-->
-<!--                </li>-->
-<!--                <li class="nav-item">-->
-<!--                <a class="navbar-brand" href="{% url 'users:signup' %}">Регистрация</a>-->
-<!--                </li>-->
                 {% endif %}
 
             </ul>

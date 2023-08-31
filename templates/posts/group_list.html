@@ -25,7 +25,14 @@
                         <img class="card-img my-2" src="{{ im.url }}">
                     {% endthumbnail %}
                     <span><p><a href="{% url  'social:post_detail' post.pk %} "
-                                style="color: black; text-decoration: none">{{ post.text }}</a></p></span>
+                                style="color: black; text-decoration: none">
+                                {% if post.text|length > 150 %}
+                                    <p>{{ post.text|slice:":150" }}...</p>
+                                {% else %}
+                                    <p>{{ post.text }}</p>
+                                {% endif %}
+<!--                        {{ post.text|slice:":200" }}...-->
+                    </a></p></span>
                     {% if not forloop.last %}
                         <hr>{% endif %}
                 {% endfor %}

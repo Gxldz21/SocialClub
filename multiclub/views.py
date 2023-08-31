@@ -27,6 +27,7 @@ def new_post(request):
         get = request.POST.get('group')
         if form.is_valid():
             post = form.save(commit=False)
+            post.text = form.cleaned_data['text']
             post.author = request.user
             if get == 0:
                 post.group = None
@@ -119,16 +120,16 @@ def profile(request, username):
     else:
         raise Http404("Page not found")
 
-@login_required
-def post_tags(request, tag_name):
-    tags_post = Post.objects.filter(tags__name=tag_name)
-    pag = Paginator(tags_post, 10)
-    pag_number = request.GET.get('page')
-    page_obj = pag.get_page(pag_number)
-    context = {
-        'posts': page_obj,
-    }
-    return render(request, 'posts/index.html', context)
+# @login_required
+# def post_tags(request, tag_name):
+#     tags_post = Post.objects.filter(tags__name=tag_name)
+#     pag = Paginator(tags_post, 10)
+#     pag_number = request.GET.get('page')
+#     page_obj = pag.get_page(pag_number)
+#     context = {
+#         'posts': page_obj,
+#     }
+#     return render(request, 'posts/index.html', context)
 
 @login_required
 def post_detail(request, post_id):
@@ -151,22 +152,23 @@ def post_detail(request, post_id):
         'comment': comments,
         'comments': page_obj,
         'tags': post_tag,
+        'edit_post': post_id,
     }
     return render(request, 'posts/post_detail.html', context)
 
-
-class about(TemplateView):
-    template_name = 'posts/aboutus.html'
-
-
-class tech(TemplateView):
-    template_name = 'posts/tech.html'
-
+@login_required
+def delete_post(request, post_id):
+    user = Post.objects.select_related('author').filter(id=post_id).first()
+    if user.author.username != str(request.user):
+        raise Http404("Страница не найдена")
+    post = Post.objects.get(pk=post_id)
+    post.delete()
+    return redirect(f'social:main')
 
 @login_required
 def update_post(request, post_id):
-    user = Post.objects.select_related('author').filter(id=post_id).first()
-    if user.author.username != str(request.user):
+    user = Post.objects.select_related('author').get(id=post_id)
+    if user.author != request.user:
         raise Http404("Страница не найдена")
     post = Post.objects.select_related('group').filter(id=post_id).first()
     if post.group and post.group.title:
@@ -176,7 +178,6 @@ def update_post(request, post_id):
     if request.method == 'POST':
         form = CreationPost(request.POST, files=request.FILES, instance=post)
         get = request.POST.get('group')
-        print('-----------------\n', get, '\n---------------')
         if form.is_valid():
             if get == '':
                 pass

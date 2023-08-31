@@ -4,10 +4,11 @@ from .models import *
 
 class CreationPost(forms.ModelForm):
     group = forms.CharField(required=False)
+    text = forms.CharField(widget=forms.Textarea)
 
     class Meta:
         model = Post
-        fields = ('title', 'text', 'image', 'tags')
+        fields = ('title', 'text', 'image')
 
     # def clean(self):
     #     likes = self.cleaned_data.get('group')

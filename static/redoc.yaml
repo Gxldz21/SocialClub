@@ -1,6 +1,6 @@
 openapi: 3.0.2
 info:
-  title: Документация к API проекта Yatube
+  title: Документация к API проекта SocialClub
   version: v1
 paths:
   /api/v1/posts/:

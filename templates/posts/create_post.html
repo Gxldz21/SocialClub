@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% block title %}{% if edit == 1 %}Редактирование поста{% else %}Создание поста{% endif %}{% endblock %}
 {% block content %}
     <main>
       <div class="container py-5">
@@ -19,7 +20,7 @@
                       Название поста
                       <span class="required text-danger" >*</span>
                     </label>
-                    <textarea name="title" cols="40" rows="1" class="form-control" required id="id_title">{% if edit == 1 %}{{ post.text }}{% endif %}</textarea>
+                    <textarea name="title" cols="40" rows="1" class="form-control" required id="id_title">{% if edit == 1 %}{{ post.title }}{% endif %}</textarea>
                     <small id="id_text-help" class="form-text text-muted">
                       Название нового поста
                     </small>

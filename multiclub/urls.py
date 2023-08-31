@@ -13,14 +13,13 @@ urlpatterns = [
     path('group/<slug:slug>/',views.group_posts, name='group'),
     path('posts/<int:post_id>/', views.post_detail, name='post_detail'),
     path('profile/<str:username>/', views.profile, name='profile'),
-    path('about/', views.about.as_view()),
-    path('tech/', views.tech.as_view()),
     path('create_post/', views.new_post, name='create'),
     path('posts/<int:post_id>/edit', views.update_post, name='update'),
+    path('posts/<int:post_id>/del', views.delete_post, name='delete'),
     path('posts/<int:post_id>/comment', views.comment, name='comment'),
     path('profile/<str:username>/follow', views.follow, name='follow'),
     path('subscribe/', views.sub, name='sub'),
-    path('tags/<str:tag_name>', views.post_tags, name='tag')
+    # path('tags/<str:tag_name>', views.post_tags, name='tag')
 ]
 
 if settings.DEBUG:

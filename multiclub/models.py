@@ -7,14 +7,16 @@ User = get_user_model()
 class Tags(models.Model):
     name = models.CharField(max_length=100)
 
+
 class Post(models.Model):
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=200, null=False)
     text = models.CharField(max_length=5000)
     pub_date = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, related_name='posts', on_delete=models.CASCADE)
     group = models.ForeignKey('Group', blank=True, null=True, related_name='groups', on_delete=models.CASCADE)
     image = models.ImageField('Картинка', upload_to='posts/', blank=True)
     tags = models.ManyToManyField(Tags, through='PostTags')
+
 
 class Group(models.Model):
     title = models.CharField(max_length=500)
