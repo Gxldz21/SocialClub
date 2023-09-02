@@ -58,6 +58,7 @@ class PostSerializer(serializers.ModelSerializer):
     tags = TagsSerializer(many=True, required=False, allow_null=True)
     character_quantity = serializers.SerializerMethodField()
     publication_date = serializers.DateTimeField(source='pub_date', read_only=True)
+    group = serializers.CharField()
 
     class Meta:
         model = Post
@@ -73,7 +74,9 @@ class PostSerializer(serializers.ModelSerializer):
             return post
 
         tags = validated_data.pop('tags')
-        post = Post.objects.create(**validated_data)
+        group = validated_data.pop('group')
+        group = Group.objects.get(title=group)
+        post = Post.objects.create(group=group, **validated_data)
         for tag in tags:
             current_tag, status = Tags.objects.get_or_create(
                 **tag)

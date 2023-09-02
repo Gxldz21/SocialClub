@@ -60,6 +60,22 @@
                       Группа, к которой будет относиться пост
                     </small>
                   </div>
+
+                     <div class="form-group row my-3 p-3">
+                        <label for="id_tags">Теги</label>
+                        <select name="tags" class="form-control" id="id_tags">
+                            <option value="1">Технологии</option>
+                            <option value="2">Наука</option>
+                            <option value="3">Искусство</option>
+                            <!-- Добавьте другие варианты, если необходимо -->
+                        </select>
+
+                        <small id="id_tags-help" class="form-text text-muted">
+                            Выберите один или несколько тегов, которые будут применены к посту
+                        </small>
+                    </div>
+
+
                   <div class="form-group row my-3 p-3">
                   <label for="image">Выберите изображение:</label>
                   <input type="file" name="image" class="form-control" id="image">
@@ -84,5 +100,35 @@
           </div>
         </div>
       </div>
+        <script>
+    // Функция для обновления отображения выбранных тегов
+    function updateSelectedTags() {
+        var selectedTags = [];
+        var select = document.getElementById("id_tags");
+        var selectedOptions = select.selectedOptions;
+
+        for (var i = 0; i < selectedOptions.length; i++) {
+            selectedTags.push(selectedOptions[i].text);
+        }
+
+        var selectedTagsDiv = document.getElementById("selected-tags");
+        selectedTagsDiv.innerHTML = "Выбранные теги: " + selectedTags.join(", ");
+    }
+
+    // Обработчик изменения элемента select
+    document.getElementById("id_tags").addEventListener("change", updateSelectedTags);
+
+    // Инициализация отображения выбранных тегов при загрузке страницы
+    window.addEventListener("load", updateSelectedTags);
+
+        $(document).ready(function() {
+        $("#id_tags").select2({
+            placeholder: "Выберите теги", // Текст для плейсхолдера
+            allowClear: true, // Разрешить сброс выбора
+            multiple: true // Разрешить множественный выбор
+        });
+    });
+
+</script>
     </main>
 {% endblock content %}

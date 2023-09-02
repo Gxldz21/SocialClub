@@ -22,10 +22,15 @@ from django.views.decorators.cache import cache_page
 @login_required
 def new_post(request):
     group = Group.objects.all()
+    tags = Tags.objects.all().first().name
     if request.method == 'POST':
         form = CreationPost(request.POST, files=request.FILES)
         get = request.POST.get('group')
+        tags1 = request.POST.get('tags')
+        print('tags - ',tags1)
         if form.is_valid():
+            tags = form.cleaned_data['tags']
+            print(tags)
             post = form.save(commit=False)
             post.text = form.cleaned_data['text']
             post.author = request.user
@@ -34,12 +39,14 @@ def new_post(request):
             else:
                 post.group = Group.objects.filter(id=get).first()
             post.save()
+            form.save_m2m()
             return redirect(f'social:profile', request.user)
     else:
         form = CreationPost()
     context = {
         'form': form,
         'group': group,
+        'tags': tags,
     }
     return render(request, 'posts/create_post.html', context)
 
