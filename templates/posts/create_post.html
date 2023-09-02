@@ -64,9 +64,12 @@
                      <div class="form-group row my-3 p-3">
                         <label for="id_tags">Теги</label>
                         <select name="tags" class="form-control" id="id_tags">
-                            <option value="1">Технологии</option>
-                            <option value="2">Наука</option>
-                            <option value="3">Искусство</option>
+                            {% for item in tags %}
+                            <option value="{{ item.id }}">{{ item }}</option>
+                            {% endfor %}
+<!--                            <option value="1">Технологии</option>-->
+<!--                            <option value="2">Наука</option>-->
+<!--                            <option value="3">Искусство</option>-->
                             <!-- Добавьте другие варианты, если необходимо -->
                         </select>
 
@@ -87,9 +90,9 @@
                   <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary">
                                           {% if edit == 1 %}
-                      Добавить
-                      {% else %}
                       Сохранить
+                      {% else %}
+                      Создать
                   {% endif %}
                     </button>
 

@@ -39,7 +39,7 @@
         <div class="post-footer mb-3">
             <div class="post-tags d-flex flex-wrap justify-content-center">
                 {% for com in tags %}
-                <p class="nav-link btn bg-light">{{com.name}}</p>
+                <a href="{% url  'social:tag' com.name %}" class="nav-link btn bg-light">{{com.name}}</a>
                 {% endfor %}
 <!--                <a href="#" class="nav-link btn bg-light">Food</a>-->
 <!--                <a href="#" class="nav-link btn bg-light">Lifestyle</a>-->

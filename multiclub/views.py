@@ -22,7 +22,7 @@ from django.views.decorators.cache import cache_page
 @login_required
 def new_post(request):
     group = Group.objects.all()
-    tags = Tags.objects.all().first().name
+    tags = Tags.objects.all()
     if request.method == 'POST':
         form = CreationPost(request.POST, files=request.FILES)
         get = request.POST.get('group')
@@ -127,16 +127,16 @@ def profile(request, username):
     else:
         raise Http404("Page not found")
 
-# @login_required
-# def post_tags(request, tag_name):
-#     tags_post = Post.objects.filter(tags__name=tag_name)
-#     pag = Paginator(tags_post, 10)
-#     pag_number = request.GET.get('page')
-#     page_obj = pag.get_page(pag_number)
-#     context = {
-#         'posts': page_obj,
-#     }
-#     return render(request, 'posts/index.html', context)
+@login_required
+def post_tags(request, tag_name):
+    tags_post = Post.objects.filter(tags__name=tag_name)
+    pag = Paginator(tags_post, 10)
+    pag_number = request.GET.get('page')
+    page_obj = pag.get_page(pag_number)
+    context = {
+        'posts': page_obj,
+    }
+    return render(request, 'posts/index.html', context)
 
 @login_required
 def post_detail(request, post_id):
@@ -175,6 +175,7 @@ def delete_post(request, post_id):
 @login_required
 def update_post(request, post_id):
     user = Post.objects.select_related('author').get(id=post_id)
+    tags = Tags.objects.all()
     if user.author != request.user:
         raise Http404("Страница не найдена")
     post = Post.objects.select_related('group').filter(id=post_id).first()
@@ -202,6 +203,7 @@ def update_post(request, post_id):
         'group': group,
         'edit': 1,
         'post': post,
+        'tags': tags,
     }
     return render(request, 'posts/create_post.html', context)
 
