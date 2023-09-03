@@ -30,9 +30,9 @@
             {% endif %}
                 <div class="content text-dark display-2 secondary-title mt-3">
                     {% if posts.text|length > 150 %}
-                    <h5>{{ posts.text|safe }}</h5>
+                    <h5><pre style="white-space: pre-wrap;">{{ posts.text|safe }}</pre></h5>
                     {% else %}
-                    <h5 style="text-align: center;">{{ posts.text|safe }}</h5>
+                    <h5 style="text-align: center;"><pre style="white-space: pre-wrap;">{{ posts.text|safe }}</pre></h5>
                     {% endif %}
                 </div>
         </article>
