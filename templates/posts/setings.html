@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load thumbnail %}
+{% block title %}Настройки{% endblock %}
+  {% block content %}
+<main>
+      <div class="container py-5">
+        <h1>Пользователь {{ request.user }}</h1>
+      </div>
+
+    </main>
+    {% endblock content %}

@@ -67,6 +67,13 @@ def index(request):
     return render(request, 'posts/index.html', context)
 
 @login_required
+def settings_user(request, username):
+    user = User.objects.get(username=username)
+    if user != request.user:
+        raise Http404("Страница не найдена")
+    return render(request, 'posts/setings.html')
+
+@login_required
 def sub(request):
     title = 'Главная страница'
     user = User.objects.get(username=str(request.user))

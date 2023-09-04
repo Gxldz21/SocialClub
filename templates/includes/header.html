@@ -1,21 +1,18 @@
 {% load static %}
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gridy Blog</title>
-    <!-- custom style.css file -->
-<!--    <link rel="stylesheet" href="{% static 'css/style.css' %}">-->
-
 </head>
 
 <body>
 
 <!-- Header -->
 <header id="header" class="shadow bg-light">
-    <nav class="container navbar">
+        <div class="container">
+            <nav class="container navbar">
         <a href="{% url  'social:main' %}" class="nav-brand text-dark">
             SocialClub
         </a>
@@ -28,8 +25,25 @@
                 {% else %}
                 <a href="{% url 'social:create' %}" class="nav-link">Создать пост</a>
                 {% endif %}
-                <a href="{% url 'users:logout' %}" class="nav-link">Выйти</a>
-                <a href="{% url 'social:profile' user.username %}" class="nav-link" style="font-weight: bold;">{{ user.username }}</a>
+<!--                <a href="{% url 'users:logout' %}" class="nav-link">Выйти</a>-->
+<!--                <a href="{% url 'social:profile' user.username %}" class="nav-link" style="font-weight: bold;">{{ user.username }}</a>-->
+<!--                <a href="#" class="user-profile-link">{{ user.username }}</a>-->
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+      <div class="dropdown text-end">
+        <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown"
+          aria-expanded="false">
+          <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+        </a>
+        <ul class="dropdown-menu text-small" style="position: absolute;">
+          <li><a class="dropdown-item" href="{% url 'social:profile' user.username %}">Профиль</a></li>
+          <li><a class="dropdown-item" href="{% url 'social:settings' user.username %}">Настройки</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item" href="{% url 'users:logout' %}">Выйти</a></li>
+        </ul>
+      </div>
+        </div>
                 {% else %}
                 <a href="{% url 'users:login' %}" class="nav-link">Войти</a>
                 <a href="{% url 'users:signup' %}" class="nav-link">Регистрация</a>
@@ -38,6 +52,9 @@
             </ul>
     </nav>
 </header>
+  <script src="{% static 'js/bootstrap.bundle.min.js' %}"
+    integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+    crossorigin="anonymous"></script>
 </body>
 
 </html>
