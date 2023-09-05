@@ -38,10 +38,7 @@
         <ul class="dropdown-menu text-small" style="position: absolute;">
           <li><a class="dropdown-item" href="{% url 'social:profile' user.username %}">Профиль</a></li>
           <li><a class="dropdown-item" href="{% url 'social:settings' user.username %}">Настройки</a></li>
-            <li><a href="{% url 'social:create' %}" class="nav-link">Создать пост</a></li>
-          <li>
-            <hr class="dropdown-divider">
-          </li>
+            <li><a class="dropdown-item" href="{% url 'social:create' %}">Создать пост</a></li>
           <li><a class="dropdown-item" href="{% url 'users:logout' %}">Выйти</a></li>
         </ul>
       </div>
