@@ -9,9 +9,3 @@ class CreationPost(forms.ModelForm):
     class Meta:
         model = Post
         fields = ('title', 'text', 'image', 'tags')
-
-    # def clean(self):
-    #     likes = self.cleaned_data.get('group')
-    #     if likes is None:
-    #         self.cleaned_data['group'] = None
-    #     return self.cleaned_data

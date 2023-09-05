@@ -20,38 +20,6 @@ from django.views.decorators.cache import cache_page
 
 
 @login_required
-def new_post(request):
-    group = Group.objects.all()
-    tags = Tags.objects.all()
-    if request.method == 'POST':
-        form = CreationPost(request.POST, files=request.FILES)
-        get = request.POST.get('group')
-        tags1 = request.POST.get('tags')
-        print('tags - ',tags1)
-        if form.is_valid():
-            tags = form.cleaned_data['tags']
-            print(tags)
-            post = form.save(commit=False)
-            post.text = form.cleaned_data['text']
-            post.author = request.user
-            if get == 0:
-                post.group = None
-            else:
-                post.group = Group.objects.filter(id=get).first()
-            post.save()
-            form.save_m2m()
-            return redirect(f'social:profile', request.user)
-    else:
-        form = CreationPost()
-    context = {
-        'form': form,
-        'group': group,
-        'tags': tags,
-    }
-    return render(request, 'posts/create_post.html', context)
-
-
-@login_required
 def index(request):
     user = User.objects.get(username=str(request.user))
     following = user.follower.all().values_list('author', flat=True)
@@ -66,12 +34,14 @@ def index(request):
 
     return render(request, 'posts/index.html', context)
 
+
 @login_required
 def settings_user(request, username):
     user = User.objects.get(username=username)
     if user != request.user:
         raise Http404("Страница не найдена")
     return render(request, 'posts/setings.html')
+
 
 @login_required
 def sub(request):
@@ -89,6 +59,7 @@ def sub(request):
     }
 
     return render(request, 'posts/index.html', context)
+
 
 @login_required
 def group_posts(request, slug):
@@ -134,6 +105,7 @@ def profile(request, username):
     else:
         raise Http404("Page not found")
 
+
 @login_required
 def post_tags(request, tag_name):
     tags_post = Post.objects.filter(tags__name=tag_name)
@@ -144,6 +116,7 @@ def post_tags(request, tag_name):
         'posts': page_obj,
     }
     return render(request, 'posts/index.html', context)
+
 
 @login_required
 def post_detail(request, post_id):
@@ -170,6 +143,7 @@ def post_detail(request, post_id):
     }
     return render(request, 'posts/post_detail.html', context)
 
+
 @login_required
 def delete_post(request, post_id):
     user = Post.objects.select_related('author').filter(id=post_id).first()
@@ -178,6 +152,35 @@ def delete_post(request, post_id):
     post = Post.objects.get(pk=post_id)
     post.delete()
     return redirect(f'social:main')
+
+
+@login_required
+def new_post(request):
+    group = Group.objects.all()
+    tags = Tags.objects.all()
+    if request.method == 'POST':
+        form = CreationPost(request.POST, files=request.FILES)
+        get = request.POST.get('group')
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.text = form.cleaned_data['text']
+            post.author = request.user
+            if get == 0:
+                post.group = None
+            else:
+                post.group = Group.objects.filter(id=get).first()
+            post.save()
+            form.save_m2m()
+            return redirect(f'social:profile', request.user)
+    else:
+        form = CreationPost()
+    context = {
+        'form': form,
+        'group': group,
+        'tags': tags,
+    }
+    return render(request, 'posts/create_post.html', context)
+
 
 @login_required
 def update_post(request, post_id):
@@ -190,10 +193,12 @@ def update_post(request, post_id):
         group = Group.objects.exclude(title=post.group.title)
     else:
         group = Group.objects.all()
+
     if request.method == 'POST':
         form = CreationPost(request.POST, files=request.FILES, instance=post)
         get = request.POST.get('group')
         if form.is_valid():
+            post = form.save(commit=False)
             if get == '':
                 pass
             else:
@@ -202,9 +207,11 @@ def update_post(request, post_id):
                 else:
                     post.group = Group.objects.filter(id=get).first()
             post.save()
-            return redirect(f'social:profile', request.user)
+            form.save_m2m()
+            return redirect('social:post_detail', post_id=post_id)
     else:
         form = CreationPost(instance=post)
+
     context = {
         'form': form,
         'group': group,
@@ -222,9 +229,10 @@ def follow(request, username):
         follows = Follow.objects.filter(author_id=following).filter(user_id=follower)
         follows.delete()
     else:
-        follows = Follow.objects.create(author_id=following,user_id=follower)
+        follows = Follow.objects.create(author_id=following, user_id=follower)
         follows.save()
     return redirect('social:profile', username)
+
 
 @login_required
 def comment(request, post_id):

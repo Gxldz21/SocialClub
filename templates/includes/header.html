@@ -23,7 +23,8 @@
                 {% elif edit == 1 %}
                 <a href="{% url 'social:delete' post.pk %}" class="nav-link">Удалить пост</a>
                 {% else %}
-                <a href="{% url 'social:create' %}" class="nav-link">Создать пост</a>
+                <a href="{% url 'social:main' %}" class="nav-link">Главная</a>
+                <a href="#" class="nav-link">Группы</a>
                 {% endif %}
 <!--                <a href="{% url 'users:logout' %}" class="nav-link">Выйти</a>-->
 <!--                <a href="{% url 'social:profile' user.username %}" class="nav-link" style="font-weight: bold;">{{ user.username }}</a>-->
@@ -32,11 +33,12 @@
       <div class="dropdown text-end">
         <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown"
           aria-expanded="false">
-          <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+          <img src="/media/avatar/unknowuserpic.png" alt="mdo" width="32" height="32" class="rounded-circle">
         </a>
         <ul class="dropdown-menu text-small" style="position: absolute;">
           <li><a class="dropdown-item" href="{% url 'social:profile' user.username %}">Профиль</a></li>
           <li><a class="dropdown-item" href="{% url 'social:settings' user.username %}">Настройки</a></li>
+            <li><a href="{% url 'social:create' %}" class="nav-link">Создать пост</a></li>
           <li>
             <hr class="dropdown-divider">
           </li>
