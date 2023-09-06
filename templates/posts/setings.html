@@ -5,7 +5,38 @@
   {% block content %}
 <main>
       <div class="container py-5">
-        <h1>Пользователь {{ request.user }}</h1>
+          <form method="post" enctype="multipart/form-data" action="{% url 'social:avatar' request.user %}">
+            {% csrf_token %}
+            <h1>Пользователь {{ request.user }}</h1>
+              <div class="form-group row my-3 p-3">
+                  <label for="avatar">Выберите изображение:</label>
+                  <input type="file" name="avatar" class="form-control" id="avatar">
+                    <small id="id_text-help" class="form-text text-muted">
+                      Загрузите изображение
+                    </small>
+                  </div>
+            <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary">
+                    Сохранить
+                </button>
+            </div>
+        </form>
+
+<!--          <form method="post" enctype="multipart/form-data" action="{% url 'social:avatar' request.user %}">{% csrf_token %}-->
+<!--        <h1>Пользователь {{ request.user }}</h1>-->
+<!--                        <div class="form-group row my-3 p-3">-->
+<!--                  <label for="avatar">Выберите изображение:</label>-->
+<!--                  <input type="file" name="avatar" class="form-control" id="avatar">-->
+<!--                    <small id="id_text-help" class="form-text text-muted">-->
+<!--                      Загрузите изображение-->
+<!--                    </small>-->
+<!--                  </div>-->
+<!--                           <div class="d-flex justify-content-end">-->
+<!--                    <button type="submit" class="btn btn-primary">-->
+<!--                      Сохранить-->
+<!--                    </button>-->
+<!--                  </div>-->
+<!--              </form>-->
       </div>
 
     </main>

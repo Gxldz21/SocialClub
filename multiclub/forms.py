@@ -9,3 +9,9 @@ class CreationPost(forms.ModelForm):
     class Meta:
         model = Post
         fields = ('title', 'text', 'image', 'tags')
+
+
+class UploadAvatar(forms.ModelForm):
+    class Meta:
+        model = UserSet
+        fields = ('user', 'avatar')

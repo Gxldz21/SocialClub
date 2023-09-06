@@ -15,7 +15,7 @@ from django.http import Http404, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.views.generic.base import TemplateView
-from .forms import CreationPost
+from .forms import CreationPost, UploadAvatar
 from django.views.decorators.cache import cache_page
 
 
@@ -180,6 +180,39 @@ def new_post(request):
         'tags': tags,
     }
     return render(request, 'posts/create_post.html', context)
+
+
+def upload_avatar(request, username):
+    user = User.objects.get(username=username)
+
+    if request.method == 'POST':
+        form = UploadAvatar(request.POST, files=request.FILES)
+        if form.is_valid():
+            user_profile, created = User.objects.get_or_create(user=user)
+            user_profile.avatar = form.cleaned_data['avatar']
+            user_profile.save()
+            return redirect(f'social:profile', request.user)
+    else:
+        form = UploadAvatar()
+    context = {
+        'form': form,
+    }
+    return render(request, 'posts/setings.html', context)
+    # if request.method == 'POST':
+    #     form = UploadAvatar(request.POST, files=request.FILES)
+    #     asd = request.POST
+    #     print(asd)
+    #     if form.is_valid():
+    #         avatar = form.save(commit=False)
+    #         avatar.user = User.objects.get(username=username)
+    #         avatar.save()
+    #         return redirect(f'social:profile', request.user)
+    # else:
+    #     form = UploadAvatar()
+    # context = {
+    #     'form': form,
+    # }
+    # return render(request, 'posts/setings.html', context)
 
 
 @login_required
