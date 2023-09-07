@@ -16,7 +16,7 @@ class Like(models.Model):
 
 
 class UserSet(models.Model):
-    user = models.ForeignKey(User, related_name='set', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='set', on_delete=models.CASCADE, blank=True)
     date = models.DateTimeField(auto_now_add=True)
     avatar = models.ImageField('avatar', upload_to='avatar/', blank=True)
 

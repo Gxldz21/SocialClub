@@ -26,14 +26,17 @@
                 <a href="{% url 'social:main' %}" class="nav-link">Главная</a>
                 <a href="#" class="nav-link">Группы</a>
                 {% endif %}
-<!--                <a href="{% url 'users:logout' %}" class="nav-link">Выйти</a>-->
-<!--                <a href="{% url 'social:profile' user.username %}" class="nav-link" style="font-weight: bold;">{{ user.username }}</a>-->
-<!--                <a href="#" class="user-profile-link">{{ user.username }}</a>-->
     <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
       <div class="dropdown text-end">
         <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown"
           aria-expanded="false">
-          <img src="/media/avatar/unknowuserpic.png" alt="mdo" width="32" height="32" class="rounded-circle">
+            {% if pic %}
+            <img src="/media/{{ pic }}"
+               alt="mdo" width="32" height="32" class="rounded-circle">
+            {% else %}
+            <img src="/media/avatar/unknowuserpic.png"
+               alt="mdo" width="32" height="32" class="rounded-circle">
+            {% endif %}
         </a>
         <ul class="dropdown-menu text-small" style="position: absolute;">
           <li><a class="dropdown-item" href="{% url 'social:profile' user.username %}">Профиль</a></li>

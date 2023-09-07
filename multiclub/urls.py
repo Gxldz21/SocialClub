@@ -21,7 +21,6 @@ urlpatterns = [
     path('subscribe/', views.sub, name='sub'),
     path('posts/tags/<str:tag_name>', views.post_tags, name='tag'),
     path('settings/<str:username>/', views.settings_user, name='settings'),
-    path('settings/<str:username>/upload', views.upload_avatar, name='avatar'),
 ]
 
 if settings.DEBUG:
