@@ -173,9 +173,10 @@ def new_post(request):
     }
     return render(request, 'posts/create_post.html', context)
 
+
 @login_required
 def settings_user(request, username):
-    user = User.objects.get(username=username)
+    user = get_object_or_404(User, username=username)
     pic = UserSet.objects.filter(user=request.user)
     if user != request.user:
         raise Http404("Страница не найдена")
@@ -197,32 +198,15 @@ def settings_user(request, username):
     return render(request, 'posts/set_user_profile.html', context)
 
 
-# def upload_avatar(request, username):
-#     if request.method == 'POST':
-#         form = UploadAvatar(request.POST, files=request.FILES)
-#         if form.is_valid():
-#             user_profile, created = User.objects.get_or_create(user=user)
-#             user_profile.avatar = form.cleaned_data['avatar']
-#             user_profile.save()
-#             return redirect(f'social:profile', request.user)
-#     else:
-#         form = UploadAvatar()
-#     context = {
-#         'form': form,
-#     }
-    # return render(request, 'posts/set_user_profile.html', context)
-    # if request.method == 'POST':
-    #     form = UploadAvatar(request.POST, files=request.FILES)
-    #     asd = request.POST
-    #     print(asd)
-    #     if form.is_valid():
-
-    # else:
-    #     form = UploadAvatar()
-    # context = {
-    #     'form': form,
-    # }
-    # return render(request, 'posts/setings.html', context)
+@login_required
+def delete_image(request, username):
+    user = get_object_or_404(User, username=username)
+    pic = UserSet.objects.filter(user=request.user)
+    if user != request.user:
+        raise Http404("Страница не найдена")
+    else:
+        pic.delete()
+    return redirect(f'social:main')
 
 
 @login_required

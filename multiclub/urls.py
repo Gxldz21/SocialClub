@@ -21,6 +21,7 @@ urlpatterns = [
     path('subscribe/', views.sub, name='sub'),
     path('posts/tags/<str:tag_name>', views.post_tags, name='tag'),
     path('settings/<str:username>/', views.settings_user, name='settings'),
+    path('settings/<str:username>/del', views.delete_image, name='del_image'),
 ]
 
 if settings.DEBUG:

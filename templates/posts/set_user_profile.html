@@ -10,18 +10,22 @@
             <h1>Пользователь {{ request.user }}</h1>
               <div class="form-group row my-3 p-3">
                   <label for="avatar">Выберите изображение:</label>
-                  <input type="file" name="avatar" class="form-control" id="avatar">
-                    <small id="id_text-help" class="form-text text-muted">
+                  <input type="file" name="avatar" class="form-control" id="avatar" accept="image/*">
+                    <small id="id_text-help" class="form-text text-muted" >
                       Загрузите изображение
                     </small>
                   </div>
-            <div class="d-flex justify-content-end">
-                <button type="submit" class="btn btn-primary">
+            <div>
+                <a href="{% url 'social:del_image' request.user %}">
+                <button type="button" class="btn btn-danger" id="deleteButton">
+                    Удалить аватар
+                </button></a>
+                <button type="submit" class="btn btn-primary" id="saveButton" style="display: none;">
                     Сохранить
                 </button>
             </div>
         </form>
       </div>
-
+    <script src="{% static 'js/js.js' %}"></script>
     </main>
     {% endblock content %}
