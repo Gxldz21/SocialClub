@@ -268,10 +268,16 @@ def comment(request, post_id):
         text = request.POST['text']
         comment = Comment.objects.create(com_text=text, post=post, com_author=request.user)
         comment.save()
-        messages.success(request, 'Комментарий успешно добавлен!')
         return redirect('social:post_detail', post.pk)
     else:
         return redirect('social:post_detail', post.pk)
+
+
+@login_required
+def delete_com(request, com_id):
+    com = get_object_or_404(Comment, pk=com_id)
+    com.delete()
+    return redirect(f'social:main')
 
 
 def page_not_found(request, exception):

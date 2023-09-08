@@ -22,6 +22,7 @@ urlpatterns = [
     path('posts/tags/<str:tag_name>', views.post_tags, name='tag'),
     path('settings/<str:username>/', views.settings_user, name='settings'),
     path('settings/<str:username>/del', views.delete_image, name='del_image'),
+    path('comment/<int:com_id>/del', views.delete_com, name='com_del'),
 ]
 
 if settings.DEBUG:
