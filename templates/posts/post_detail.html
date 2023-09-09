@@ -41,33 +41,42 @@
                 {% for com in tags %}
                 <a href="{% url  'social:tag' com.name %}" class="nav-link btn bg-light">{{com.name}}</a>
                 {% endfor %}
-<!--                <a href="#" class="nav-link btn bg-light">Food</a>-->
-<!--                <a href="#" class="nav-link btn bg-light">Lifestyle</a>-->
-<!--                <a href="#" class="nav-link btn bg-light">Techonogy</a>-->
-<!--                <a href="#" class="nav-link btn bg-light">Fashion</a>-->
             </div>
         </div>
                <div class="post-comments py-2">
-            <h3 class="text-center display-1 secondary-title py-2">{{comment.count}} Comments</h3>
-    {% for com in comments %}
-            <div class="comment-details">
-                <div class="comment-item py-2">
-                    <div class="d-flex">
-                        <div class="comment-content">
-                <strong><a href="{% url  'social:profile' com.com_author.username %}" style="color: black; text-decoration: none"> {{ com.com_author.username }}</a></strong>
-                            {% if request.user.id == com.com_author_id %}
-                <sup>{{ com.com_date | date:'d.m.Y в H:i'}}	<a href="{% url  'social:com_del' com.id %}">&#10006;</a></sup>
-                            {% else %}
-                            <sup>{{ com.com_date | date:'d.m.Y в H:i'}}</sup>
-                            {% endif %}
-                            <p class="title-secondary text-dark">
-                                {{ com.com_text }}
-                            </p>
-                        </div>
+                   <h3 class="text-center display-1 secondary-title py-2">{{comment.count}} Comments</h3>
+                   {% for com in comments %}
+                    <div class="comment-details">
+                        <div class="comment-item py-2">
+                            <div class="d-flex">
+                                <div class="avatar px-2">
+<!--                                    <img src="./assets/face/face3.jpg" class="rounded" alt="">-->
+                                                {% if pic %}
+                                                <img src="/media/{{ pic }}"
+                                                   alt="mdo" width="55" height="55" class="rounded-circle">
+                                                {% else %}
+                                                <img src="/media/avatar/unknowuserpic.png"
+                                                   alt="mdo" width="55" height="55" class="rounded-circle">
+                                                {% endif %}
+                                </div>
+                                <div class="comment-content">
+                                    <h5 class="display-2 m-0">
+                                        <strong><a href="{% url  'social:profile' com.com_author.username %}" style="color: black; text-decoration: none"> {{ com.com_author.username }}</a></strong>
+                                        {% if request.user.id == com.com_author_id %}
+                                        <sup>{{ com.com_date | date:'d.m.Y в H:i'}}	<a href="{% url  'social:com_del' com.id %}" style="color: black; text-decoration: none">&#10006;</a></sup>
+                                        {% else %}
+                                        <sup>{{ com.com_date | date:'d.m.Y в H:i'}}</sup>
+                                        {% endif %}
+                                    </h5>
+                                    <p class="title-secondary text-dark">
+                                         {{ com.com_text }}
+                                    </p>
+
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                    {% endfor %}
+                   {% endfor %}
             <h3 class="text-center display-1 secondary-title py-2">Оставьте комментарий</h3>
                 <form method="post" action="{% url 'social:comment' posts.pk %}">{% csrf_token %}
                         <div class="comment-form">

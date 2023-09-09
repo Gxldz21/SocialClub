@@ -276,8 +276,9 @@ def comment(request, post_id):
 @login_required
 def delete_com(request, com_id):
     com = get_object_or_404(Comment, pk=com_id)
+    post = Comment.objects.filter(pk=com_id).first().post
     com.delete()
-    return redirect(f'social:main')
+    return redirect('social:post_detail', post.pk)
 
 
 def page_not_found(request, exception):
