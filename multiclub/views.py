@@ -78,7 +78,7 @@ def profile(request, username):
     follow_check = False
     follower = User.objects.filter(username=str(request.user)).first().id
     author = User.objects.filter(username=username).first().id
-    avatar = UserSet.objects.filter(user_id=author).first().avatar
+    avatar = UserSet.objects.filter(user_id=author).first()
     if not Follow.objects.filter(user_id=follower).filter(author_id=author).exists():
         follow_check = True
     pag = Paginator(user_post, 10)
