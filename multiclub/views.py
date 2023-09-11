@@ -115,6 +115,8 @@ def post_detail(request, post_id):
     if not Post.objects.filter(id=post_id).exists():
         raise Http404("Page not found")
     comments = Comment.objects.filter(post=post_id).all()
+    # avatar = UserSet.objects.select_related('user')
+    avatar = UserSet.objects.filter(user_id__in=[com.com_author.id for com in comments]).select_related('user')
     info_post = Post.objects.select_related('author').filter(id=post_id).first()
     post_count = Post.objects.select_related('author').filter(author__username=info_post.author.username).count()
     group_post = Post.objects.select_related('group').filter(id=post_id).first()
@@ -132,6 +134,7 @@ def post_detail(request, post_id):
         'comments': page_obj,
         'tags': post_tag,
         'edit_post': post_id,
+        'avatar': avatar,
     }
     return render(request, 'posts/post_detail.html', context)
 

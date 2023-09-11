@@ -50,14 +50,13 @@
                         <div class="comment-item py-2">
                             <div class="d-flex">
                                 <div class="avatar px-2">
-<!--                                    <img src="./assets/face/face3.jpg" class="rounded" alt="">-->
-                                                {% if pic %}
-                                                <img src="/media/{{ pic }}"
-                                                   alt="mdo" width="55" height="55" class="rounded-circle">
-                                                {% else %}
-                                                <img src="/media/avatar/unknowuserpic.png"
-                                                   alt="mdo" width="55" height="55" class="rounded-circle">
-                                                {% endif %}
+                                    {% for av in avatar %}
+                                        {% if av.user.id == com.com_author.id %}
+                                            <img src="/media/{{ av.avatar }}" alt="mdo" width="55" height="55" class="rounded-circle">
+                                        {% endif %}
+                                    {% empty %}
+                                        <img src="/media/avatar/unknownuserpic.png" alt="mdo" width="55" height="55" class="rounded-circle">
+                                    {% endfor %}
                                 </div>
                                 <div class="comment-content">
                                     <h5 class="display-2 m-0">
