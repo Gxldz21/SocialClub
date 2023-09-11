@@ -18,7 +18,7 @@ class Like(models.Model):
 class UserSet(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
-    avatar = models.ImageField('avatar', upload_to='avatar/', blank=True)
+    avatar = models.ImageField('avatar', upload_to='avatar/')
 
 
 class Post(models.Model):

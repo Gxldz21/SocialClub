@@ -1,5 +1,5 @@
-import time
-
+import os
+from django.core.files.storage import default_storage
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -9,7 +9,7 @@ from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
+from django.conf import settings
 from .models import *
 from django.http import Http404, JsonResponse
 from django.contrib.auth.decorators import login_required
@@ -183,11 +183,14 @@ def settings_user(request, username):
     if user != request.user:
         raise Http404("Страница не найдена")
     if request.method == 'POST':
+        post_data = request.POST
+        print(post_data)
         if UserSet.objects.filter(user=request.user).exists():
+            old_avatar_path = os.path.join(settings.MEDIA_ROOT, str(pic.first().avatar))
+            default_storage.delete(old_avatar_path)
             pic.delete()
         form = UploadAvatar(request.POST, files=request.FILES)
         if form.is_valid():
-            print("asd")
             avatar = form.save(commit=False)
             avatar.user = User.objects.get(username=username)
             avatar.save()
@@ -207,6 +210,8 @@ def delete_image(request, username):
     if user != request.user:
         raise Http404("Страница не найдена")
     else:
+        old_avatar_path = os.path.join(settings.MEDIA_ROOT, str(pic.first().avatar))
+        default_storage.delete(old_avatar_path)
         pic.delete()
     return redirect(f'social:main')
 

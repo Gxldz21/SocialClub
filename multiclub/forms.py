@@ -14,4 +14,4 @@ class CreationPost(forms.ModelForm):
 class UploadAvatar(forms.ModelForm):
     class Meta:
         model = UserSet
-        fields = ('user', 'avatar')
+        fields = ('avatar', )
