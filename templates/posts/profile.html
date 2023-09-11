@@ -5,8 +5,20 @@
   {% block content %}
     <main>
       <div class="container py-5">
-        <h1>Все посты пользователя {{ username }}</h1>
-        {% if curruser != username %}
+                  <div class="d-flex">
+                                <div class="avatar px-2">
+                                            {% if avatar %}
+                                            <img src="/media/{{ avatar }}"
+                                               alt="mdo" width="140" height="140" class="rounded-circle">
+                                            {% else %}
+                                            <img src="/media/avatar/unknowuserpic.png"
+                                               alt="mdo" width="140" height="140" class="rounded-circle">
+                                            {% endif %}
+                                </div>
+                                <div class="comment-content">
+                                    <h1>Пользователь {{ username }}</h1>
+                                    <h5>Дата регистрации {{ request.user.date_joined|date:"d E Y в H:i" }}</h5>
+                              {% if curruser != username %}
       {% if follow %}
           <div class="frame">
               <a href="{% url  'social:follow' username %}"><button class="custom-btn btn-13">Подписаться</button></a>
@@ -18,6 +30,8 @@
             </div>
       {% endif %}
       {% endif %}
+                                    </div>
+          </div>
         <br><h3>Всего постов: {{ count }} </h3>
           {% for post in posts %}
         <article>

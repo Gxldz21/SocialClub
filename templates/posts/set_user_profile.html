@@ -5,9 +5,23 @@
   {% block content %}
 <main>
       <div class="container py-5">
+          <div class="d-flex">
+                                <div class="avatar px-2">
+                                            {% if pic %}
+                                            <img src="/media/{{ pic }}"
+                                               alt="mdo" width="140" height="140" class="rounded-circle">
+                                            {% else %}
+                                            <img src="/media/avatar/unknowuserpic.png"
+                                               alt="mdo" width="140" height="140" class="rounded-circle">
+                                            {% endif %}
+                                </div>
+                                <div class="comment-content">
+                                    <h1>Пользователь {{ request.user }}</h1>
+                                    <h5>Дата регистрации {{ request.user.date_joined|date:"d E Y в H:i" }}</h5>
+                                </div>
+          </div>
           <form method="post" enctype="multipart/form-data" action="{% url 'social:settings' request.user %}">
             {% csrf_token %}
-            <h1>Пользователь {{ request.user }}</h1>
               <div class="form-group row my-3 p-3">
                   <label for="avatar">Выберите изображение:</label>
                   <input type="file" name="avatar" class="form-control" id="avatar" accept="image/*">

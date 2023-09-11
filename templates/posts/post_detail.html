@@ -53,9 +53,13 @@
                                 <div class="avatar px-2">
                                 {% with user_avatar=avatar|get_user_avatar:com.com_author.id %}
                                     {% if user_avatar %}
-                                        <img src="{{ user_avatar.avatar.url }}" alt="mdo" width="55" height="55" class="rounded-circle">
+                                        <a href="{% url  'social:profile' com.com_author.username %}">
+                                            <img src="{{ user_avatar.avatar.url }}" alt="mdo" width="55" height="55" class="rounded-circle">
+                                        </a>
                                     {% else %}
-                                        <img src="/media/avatar/unknowuserpic.png" alt="mdo" width="55" height="55" class="rounded-circle">
+                                        <a href="{% url  'social:profile' com.com_author.username %}">
+                                            <img src="/media/avatar/unknowuserpic.png" alt="mdo" width="55" height="55" class="rounded-circle">
+                                        </a>
                                     {% endif %}
                                 {% endwith %}
                                 </div>
