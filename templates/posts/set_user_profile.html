@@ -6,23 +6,17 @@
 <main>
       <div class="container py-5">
           <div class="d-flex">
-                                <div class="avatar px-2">
-                                            {% if pic %}
-                                            <img src="/media/{{ pic }}"
-                                               alt="mdo" width="140" height="140" class="rounded-circle">
-                                            {% else %}
-                                            <img src="/media/avatar/unknowuserpic.png"
-                                               alt="mdo" width="140" height="140" class="rounded-circle">
-                                            {% endif %}
-                                </div>
                                 <div class="comment-content">
-                                    <h1>Пользователь {{ request.user }}</h1>
-                                    <h5>Дата регистрации {{ request.user.date_joined|date:"d E Y в H:i" }}</h5>
+                                    <h1>Настройки</h1>
                                 </div>
           </div>
+                        <div class="container">
+                  <a href="{% url  'users:password_change_form' %}" class="nav-link" ><h5>Сменить пароль</h5></a>
+                            <a href="#" class="nav-link" ><h5>Сменить email</h5></a>
           <form method="post" enctype="multipart/form-data" action="{% url 'social:settings' request.user %}">
             {% csrf_token %}
               <div class="form-group row my-3 p-3">
+                  <h5>Сменить аватар</h5>
                   <label for="avatar">Выберите изображение:</label>
                   <input type="file" name="avatar" class="form-control" id="avatar" accept="image/*">
                     <small id="id_text-help" class="form-text text-muted" >
@@ -40,6 +34,7 @@
             </div>
         </form>
       </div>
+          </div>
     <script src="{% static 'js/js.js' %}"></script>
     </main>
     {% endblock content %}

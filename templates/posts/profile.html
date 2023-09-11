@@ -9,15 +9,16 @@
                                 <div class="avatar px-2">
                                             {% if avatar %}
                                             <img src="/media/{{ avatar.avatar }}"
-                                               alt="mdo" width="140" height="140" class="rounded-circle">
+                                               alt="mdo" width="170" height="170" class="rounded-circle">
                                             {% else %}
                                             <img src="/media/avatar/unknowuserpic.png"
-                                               alt="mdo" width="140" height="140" class="rounded-circle">
+                                               alt="mdo" width="170" height="170" class="rounded-circle">
                                             {% endif %}
                                 </div>
                                 <div class="comment-content">
                                     <h1>Пользователь {{ username }}</h1>
                                     <h5>Дата регистрации {{ request.user.date_joined|date:"d E Y в H:i" }}</h5>
+                                    <h6>Подписчиков </h6>
                               {% if curruser != username %}
       {% if follow %}
           <div class="frame">
