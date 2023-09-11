@@ -1,7 +1,5 @@
-# core/templatetags/user_filters.py
 from django import template
-# В template.Library зарегистрированы все встроенные теги и фильтры шаблонов;
-# добавляем к ним и наш фильтр.
+from multiclub.models import *
 register = template.Library()
 
 
@@ -9,6 +7,6 @@ register = template.Library()
 def addclass(field, css):
     return field.as_widget(attrs={'class': css})
 
-# синтаксис @register... , под который описана функция addclass() -
-# это применение "декораторов", функций, меняющих поведение функций
-# Не бойтесь соб@к
+@register.filter
+def get_user_avatar(user_avatar, user_id):
+    return user_avatar.filter(user_id=user_id).first()

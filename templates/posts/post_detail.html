@@ -2,6 +2,7 @@
 {% load thumbnail %}
 {% block title %}Пост {{ posts.text }}{% endblock %}
 {% block content %}
+{% load user_filters %}
 <main id="site-main">
 
     <!-- Post Content -->
@@ -23,9 +24,9 @@
             </div>
             {% if posts.image %}
             <div class="thumbnail mt-3">
-<!--                {% thumbnail posts.image "960x339" crop="center" upscale=True as im %}-->
+                {% thumbnail posts.image "960x339" crop="center" upscale=True as im %}
                 <img class="thumbnail" src="{{ im.url }}">
-<!--                {% endthumbnail %}-->
+                {% endthumbnail %}
             </div>
             {% endif %}
                 <div class="content text-dark display-2 secondary-title mt-3">
@@ -50,13 +51,13 @@
                         <div class="comment-item py-2">
                             <div class="d-flex">
                                 <div class="avatar px-2">
-                                    {% for av in avatar %}
-                                        {% if av.user.id == com.com_author.id %}
-                                            <img src="/media/{{ av.avatar }}" alt="mdo" width="55" height="55" class="rounded-circle">
-                                        {% endif %}
-                                    {% empty %}
-                                        <img src="/media/avatar/unknownuserpic.png" alt="mdo" width="55" height="55" class="rounded-circle">
-                                    {% endfor %}
+                                {% with user_avatar=avatar|get_user_avatar:com.com_author.id %}
+                                    {% if user_avatar %}
+                                        <img src="{{ user_avatar.avatar.url }}" alt="mdo" width="55" height="55" class="rounded-circle">
+                                    {% else %}
+                                        <img src="/media/avatar/unknowuserpic.png" alt="mdo" width="55" height="55" class="rounded-circle">
+                                    {% endif %}
+                                {% endwith %}
                                 </div>
                                 <div class="comment-content">
                                     <h5 class="display-2 m-0">
