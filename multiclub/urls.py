@@ -18,6 +18,7 @@ urlpatterns = [
     path('posts/<int:post_id>/del', views.delete_post, name='delete'),
     path('posts/<int:post_id>/comment', views.comment, name='comment'),
     path('profile/<str:username>/follow', views.follow, name='follow'),
+    path('posts/<int:post_id>/like', views.like_post, name='like'),
     path('subscribe/', views.sub, name='sub'),
     path('posts/tags/<str:tag_name>', views.post_tags, name='tag'),
     path('settings/<str:username>/', views.settings_user, name='settings'),

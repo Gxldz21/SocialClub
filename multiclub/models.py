@@ -11,10 +11,6 @@ class Tags(models.Model):
         return self.name
 
 
-class Like(models.Model):
-    like_date = models.DateTimeField(auto_now_add=True)
-
-
 class UserSet(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
@@ -29,7 +25,6 @@ class Post(models.Model):
     group = models.ForeignKey('Group', blank=True, null=True, related_name='groups', on_delete=models.CASCADE)
     image = models.ImageField('Картинка', upload_to='posts/', blank=True)
     tags = models.ManyToManyField(Tags, through='PostTags', blank=True)
-    like = models.ManyToManyField(Like, through='LikePost', blank=True)
 
 
 class Group(models.Model):
@@ -59,6 +54,7 @@ class PostTags(models.Model):
     tags = models.ForeignKey(Tags, related_name='tags', on_delete=models.CASCADE)
 
 
-class LikePost(models.Model):
-    post = models.ForeignKey(Post, related_name='l_post', on_delete=models.CASCADE)
-    like = models.ForeignKey(Like, related_name='like', on_delete=models.CASCADE)
+class Like(models.Model):
+    like_date = models.DateTimeField(auto_now_add=True)
+    user_like = models.ForeignKey(User, related_name='like_user', on_delete=models.CASCADE)
+    post_like = models.ForeignKey(Post, related_name='like_post', on_delete=models.CASCADE)

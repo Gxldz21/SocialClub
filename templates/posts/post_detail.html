@@ -44,8 +44,13 @@
                 {% endfor %}
             </div>
         </div>
+        <div class="post-footer mb-3">
+            <div class="post-tags d-flex flex-wrap justify-content-center">
+            <a href="{% url  'social:like' edit_post %}" class="nav-link">{{ like }} &#10084;</a>
+            </div>
+        </div>
                <div class="post-comments py-2">
-                   <h3 class="text-center display-1 secondary-title py-2">{{comment.count}} Comments</h3>
+                   <h3 class="text-center">{{comment.count}} Comments</h3>
                    {% for com in comments %}
                     <div class="comment-details">
                         <div class="comment-item py-2">

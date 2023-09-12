@@ -78,7 +78,10 @@ def profile(request, username):
     follow_check = False
     follower = User.objects.filter(username=str(request.user)).first().id
     author = User.objects.filter(username=username).first().id
+    post = Post.objects.filter(author=author)
+    like = Like.objects.filter(post_like__in=post).count()
     avatar = UserSet.objects.filter(user_id=author).first()
+    follows = Follow.objects.filter(author=author).count()
     if not Follow.objects.filter(user_id=follower).filter(author_id=author).exists():
         follow_check = True
     pag = Paginator(user_post, 10)
@@ -93,6 +96,8 @@ def profile(request, username):
         'follow': follow_check,
         'curruser': str(request.user),
         'avatar': avatar,
+        'follows': follows,
+        'like': like,
     }
     if User.objects.filter(username=username).exists():
         return render(request, 'posts/profile.html', context)
@@ -113,6 +118,19 @@ def post_tags(request, tag_name):
 
 
 @login_required
+def like_post(request, post_id):
+    like_user = User.objects.get(username=request.user)
+    like_p = Post.objects.get(pk=post_id)
+    if Like.objects.filter(user_like=like_user).filter(post_like=like_p).exists():
+        like = Like.objects.filter(user_like=like_user).filter(post_like=like_p)
+        like.delete()
+    else:
+        like = Like.objects.create(user_like=like_user, post_like=like_p)
+        like.save()
+    return redirect('social:post_detail', post_id)
+
+
+@login_required
 def post_detail(request, post_id):
     if not Post.objects.filter(id=post_id).exists():
         raise Http404("Page not found")
@@ -122,6 +140,7 @@ def post_detail(request, post_id):
     post_count = Post.objects.select_related('author').filter(author__username=info_post.author.username).count()
     group_post = Post.objects.select_related('group').filter(id=post_id).first()
     post_tag = Post.objects.get(pk=post_id).tags.all()
+    like = Like.objects.filter(post_like=post_id).count()
     user = str(request.user)
     pag = Paginator(comments, 10)
     pag_number = request.GET.get('page')
@@ -136,6 +155,7 @@ def post_detail(request, post_id):
         'tags': post_tag,
         'edit_post': post_id,
         'avatar': avatar,
+        'like': like,
     }
     return render(request, 'posts/post_detail.html', context)
 
