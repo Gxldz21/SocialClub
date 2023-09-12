@@ -17,17 +17,17 @@
                                 </div>
                                 <div class="comment-content">
                                     <h1>Пользователь {{ username }}</h1>
-                                    <h5>Дата регистрации {{ request.user.date_joined|date:"d E Y в H:i" }}</h5>
-                                    <h6>&#8226;Подписчиков: {{ follows }}&emsp;&#8226;Всего постов: {{ count }}&emsp;&#8226;Лайков: {{like}}</h6>
+                                    <h5>&emsp;Дата регистрации {{ request.user.date_joined|date:"d E Y в H:i" }}</h5>
+                                    <h6>&emsp;&#8226;Подписчиков: {{ follows }}&emsp;&#8226;Всего постов: {{ count }}&emsp;&#8226;Лайков: {{like}}</h6>
                               {% if curruser != username %}
       {% if follow %}
           <div class="frame">
-              <a href="{% url  'social:follow' username %}"><button class="custom-btn btn-13">Подписаться</button></a>
+              &emsp;<a href="{% url  'social:follow' username %}"><button class="custom-btn btn-13">Подписаться</button></a>
             </div>
 <!--          <a href="{% url  'social:follow' username %}" style="color: black; text-decoration: none">Подписаться</a>-->
       {% else %}
           <div class="frame">
-              <a href="{% url  'social:follow' username %}"><button class="custom-btn btn-13">Отписаться</button></a>
+              &emsp;<a href="{% url  'social:follow' username %}"><button class="custom-btn btn-13">Отписаться</button></a>
             </div>
       {% endif %}
       {% endif %}
